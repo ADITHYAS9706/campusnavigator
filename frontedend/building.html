@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buildings — CampusNav</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1612;
+      --bark: #3D2B1F;
+      --moss: #4A6741;
+      --gold: #C8992A;
+      --sand: #E8D9C0;
+      --mist: #D4CABA;
+      --white: #FDFCF9;
+      --red: #B84040;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(245, 240, 232, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--mist);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      color: var(--bark);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--moss); font-style: italic; }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
+    .nav-links a.active { color: var(--moss); }
+    .nav-cta {
+      background: var(--bark) !important;
+      color: var(--cream) !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: 2rem;
+      opacity: 1 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--moss) !important; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--bark);
+      padding: 4rem 3rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(245,240,232,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,240,232,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .page-header::after {
+      content: 'BUILDINGS';
+      position: absolute;
+      right: 2rem;
+      bottom: -1.5rem;
+      font-family: 'DM Serif Display', serif;
+      font-size: 9rem;
+      color: rgba(245,240,232,0.04);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .breadcrumb a { color: rgba(245,240,232,0.5); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: rgba(245,240,232,0.9); }
+    .breadcrumb-sep { color: rgba(245,240,232,0.25); }
+    .breadcrumb span { color: var(--gold); }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      color: var(--cream);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+    .page-title em { color: var(--gold); font-style: italic; }
+
+    .page-subtitle {
+      color: rgba(245,240,232,0.6);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    /* ── SEARCH + FILTERS BAR ── */
+    .controls-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--sand);
+      padding: 1.25rem 3rem;
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+    }
+
+    .controls-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 240px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--cream);
+      border: 1.5px solid var(--mist);
+      border-radius: 0.6rem;
+      padding: 0.6rem 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--moss);
+      box-shadow: 0 0 0 3px rgba(74,103,65,0.1);
+    }
+    .search-wrap svg { opacity: 0.4; flex-shrink: 0; }
+    .search-wrap input {
+      border: none; outline: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      width: 100%;
+    }
+    .search-wrap input::placeholder { color: var(--mist); }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 0.45rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border: 1.5px solid var(--mist);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .filter-tab:hover { border-color: var(--moss); color: var(--moss); }
+    .filter-tab.active {
+      background: var(--moss);
+      border-color: var(--moss);
+      color: var(--white);
+    }
+
+    .view-toggle {
+      display: flex;
+      border: 1.5px solid var(--mist);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .view-btn {
+      padding: 0.45rem 0.7rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--ink);
+      opacity: 0.4;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    .view-btn.active { background: var(--bark); color: var(--cream); opacity: 1; }
+
+    .results-count {
+      font-size: 0.78rem;
+      color: var(--ink);
+      opacity: 0.5;
+      white-space: nowrap;
+    }
+    .results-count strong { color: var(--bark); opacity: 1; font-weight: 600; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 3rem 5rem;
+    }
+
+    /* ── BUILDING DETAIL PANEL (when a building is selected) ── */
+    .detail-panel {
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1.25rem;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+      animation: slideDown 0.3s ease;
+    }
+    .detail-panel.open { display: grid; grid-template-columns: 1fr 380px; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .detail-main { padding: 2.5rem; border-right: 1px solid var(--sand); }
+
+    .detail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .detail-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: var(--bark);
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-code {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1.25rem;
+    }
+
+    .detail-desc {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--ink);
+      opacity: 0.75;
+      margin-bottom: 2rem;
+      max-width: 520px;
+    }
+
+    .detail-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .meta-item {
+      background: var(--cream);
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+    .meta-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 0.3rem;
+    }
+    .meta-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--bark);
+    }
+
+    .detail-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--moss);
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-nav:hover { background: var(--bark); transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--bark);
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1.5px solid var(--mist);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--bark); }
+
+    .btn-close-detail {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink);
+      opacity: 0.4;
+      font-size: 1.2rem;
+      padding: 0.25rem;
+      line-height: 1;
+      float: right;
+      transition: opacity 0.2s;
+    }
+    .btn-close-detail:hover { opacity: 1; }
+
+    .detail-sidebar { padding: 2rem; background: var(--cream); }
+
+    .sidebar-section { margin-bottom: 2rem; }
+    .sidebar-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .hours-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.83rem;
+    }
+    .hours-day { color: var(--ink); opacity: 0.6; }
+    .hours-time { color: var(--bark); font-weight: 500; }
+    .hours-row.today .hours-day { color: var(--moss); font-weight: 600; opacity: 1; }
+    .hours-row.today .hours-time { color: var(--moss); }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+    .status-open { background: rgba(74,103,65,0.12); color: var(--moss); }
+    .status-closed { background: rgba(184,64,64,0.1); color: var(--red); }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .amenities-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .amenity-tag {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.65rem;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 0.4rem;
+      color: var(--ink);
+      opacity: 0.75;
+    }
+
+    /* ── BUILDINGS GRID ── */
+    .buildings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .buildings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Grid Card */
+    .b-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.22s, box-shadow 0.22s, border-color 0.2s;
+      position: relative;
+    }
+    .b-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26,22,18,0.1);
+      border-color: var(--mist);
+    }
+    .b-card.selected {
+      border-color: var(--moss);
+      box-shadow: 0 0 0 2px rgba(74,103,65,0.2), 0 8px 30px rgba(26,22,18,0.1);
+    }
+
+    .b-card-banner {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .b-card-status {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2rem;
+    }
+    .b-card-status.open { background: rgba(74,103,65,0.85); color: white; }
+    .b-card-status.closed { background: rgba(26,22,18,0.6); color: rgba(255,255,255,0.8); }
+
+    .b-card-body { padding: 1.25rem 1.4rem 1.5rem; }
+
+    .b-card-type {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .b-card-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--bark);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .b-card-code {
+      font-size: 0.75rem;
+      color: var(--ink);
+      opacity: 0.45;
+      margin-bottom: 0.9rem;
+    }
+
+    .b-card-desc {
+      font-size: 0.83rem;
+      line-height: 1.6;
+      color: var(--ink);
+      opacity: 0.6;
+      margin-bottom: 1.1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .b-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--sand);
+    }
+
+    .b-card-floors {
+      font-size: 0.75rem;
+      color: var(--ink);
+      opacity: 0.5;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .b-card-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--moss);
+      background: rgba(74,103,65,0.08);
+      border: none;
+      border-radius: 2rem;
+      padding: 0.35rem 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .b-card-nav-btn:hover { background: rgba(74,103,65,0.18); }
+
+    /* List Card */
+    .b-list-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 3.5rem 1fr auto;
+      align-items: center;
+      gap: 1.25rem;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.2s;
+    }
+    .b-list-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 20px rgba(26,22,18,0.07);
+      border-color: var(--mist);
+    }
+    .b-list-card.selected { border-color: var(--moss); }
+
+    .b-list-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .b-list-info {}
+    .b-list-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      color: var(--bark);
+      margin-bottom: 0.2rem;
+    }
+    .b-list-meta {
+      font-size: 0.78rem;
+      color: var(--ink);
+      opacity: 0.5;
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .b-list-right { text-align: right; flex-shrink: 0; }
+    .b-list-status {
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .b-list-status.open { color: var(--moss); }
+    .b-list-status.closed { color: var(--red); }
+    .b-list-floors {
+      font-size: 0.72rem;
+      color: var(--ink);
+      opacity: 0.4;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      display: none;
+    }
+    .empty-state.visible { display: block; }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+    .empty-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--bark);
+      margin-bottom: 0.5rem;
+    }
+    .empty-desc { font-size: 0.9rem; color: var(--ink); opacity: 0.5; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bark);
+      color: var(--cream);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+    }
+    .footer-brand span { color: var(--gold); font-style: italic; }
+    .footer-copy { font-size: 0.78rem; opacity: 0.4; }
+
+    /* ── CATEGORY COLORS ── */
+    .cat-academic    { color: var(--moss); }
+    .cat-admin       { color: var(--gold); }
+    .cat-student     { color: #6B8EC9; }
+    .cat-athletics   { color: #C96B6B; }
+    .cat-facilities  { color: #9B7EC9; }
+
+    .bg-academic    { background: rgba(74,103,65,0.08); }
+    .bg-admin       { background: rgba(200,153,42,0.1); }
+    .bg-student     { background: rgba(107,142,201,0.1); }
+    .bg-athletics   { background: rgba(201,107,107,0.1); }
+    .bg-facilities  { background: rgba(155,126,201,0.1); }
+
+    .banner-academic  { background: linear-gradient(135deg, #B8C9A8, #8FAA80); }
+    .banner-admin     { background: linear-gradient(135deg, #D4BF8A, #B8A060); }
+    .banner-student   { background: linear-gradient(135deg, #A8B8D4, #8098BC); }
+    .banner-athletics { background: linear-gradient(135deg, #D4A8A8, #BC8080); }
+    .banner-facilities{ background: linear-gradient(135deg, #C4B0D4, #A890BC); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .page-header { padding: 3rem 1.5rem 2.5rem; }
+      .controls-bar { padding: 1rem 1.5rem; top: 57px; }
+      .main { padding: 2rem 1.5rem 4rem; }
+      .detail-panel.open { grid-template-columns: 1fr; }
+      .detail-sidebar { display: none; }
+      .detail-meta { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    }
+
+    /* ── STAGGER ANIMATION ── */
+    .b-card, .b-list-card {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 0.4s ease,
+        transform 0.4s ease,
+        box-shadow 0.22s,
+        border-color 0.2s;
+    }
+    .b-card.visible, .b-list-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .b-card:hover { transform: translateY(-4px) !important; }
+    .b-list-card:hover { transform: translateX(4px) !important; }
+    .b-card.selected { transform: translateY(0) !important; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Campus<span>Nav</span></a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="building.html" class="active">Buildings</a></li>
+      <li><a href="#">Events</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="map.html" class="nav-cta">Open Map →</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Buildings</span>
+      </div>
+      <h1 class="page-title">Campus <em>Buildings</em></h1>
+      <p class="page-subtitle">Explore all facilities, departments, and spaces across campus. Click any building for hours, amenities, and directions.</p>
+    </div>
+  </header>
+
+  <!-- CONTROLS BAR -->
+  <div class="controls-bar">
+    <div class="controls-inner">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search buildings, rooms, departments…" />
+      </div>
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="academic">Academic</button>
+        <button class="filter-tab" data-filter="admin">Admin</button>
+        <button class="filter-tab" data-filter="student">Student Life</button>
+        <button class="filter-tab" data-filter="athletics">Athletics</button>
+        <button class="filter-tab" data-filter="facilities">Facilities</button>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" title="Grid view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </button>
+        <button class="view-btn" id="listViewBtn" title="List view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="results-count" id="resultsCount"><strong>16</strong> buildings</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DETAIL PANEL -->
+    <div class="detail-panel" id="detailPanel">
+      <div class="detail-main" id="detailMain"></div>
+      <div class="detail-sidebar" id="detailSidebar"></div>
+    </div>
+
+    <!-- GRID VIEW -->
+    <div class="buildings-grid" id="gridView"></div>
+
+    <!-- LIST VIEW -->
+    <div class="buildings-list" id="listView" style="display:none;"></div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">No buildings found</div>
+      <div class="empty-desc">Try a different search term or clear your filters.</div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">Campus<span>Nav</span></div>
+    <div class="footer-copy">© 2025 CampusNav · University Navigation System</div>
+  </footer>
+
+  <script>
+    // ── DATA ──
+    const buildings = [
+      {
+        id: "library",
+        name: "Main Library",
+        code: "LIB-01",
+        category: "academic",
+        emoji: "📚",
+        floors: 5,
+        isOpen: true,
+        description: "The central academic library housing over 2 million volumes, digital archives, group study rooms, and research assistance desks.",
+        amenities: ["Wi-Fi", "Printing", "Study Rooms", "Café", "Accessible", "24hr Access"],
+        hours: { Mon:"7:00 AM – 11:00 PM", Tue:"7:00 AM – 11:00 PM", Wed:"7:00 AM – 11:00 PM", Thu:"7:00 AM – 11:00 PM", Fri:"7:00 AM – 9:00 PM", Sat:"9:00 AM – 8:00 PM", Sun:"10:00 AM – 10:00 PM" },
+        phone: "+1 (555) 201-4400",
+        location: "North Quad, Central Campus",
+      },
+      {
+        id: "science",
+        name: "Science Hall",
+        code: "SCI-02",
+        category: "academic",
+        emoji: "🔬",
+        floors: 6,
+        isOpen: true,
+        description: "State-of-the-art research labs for Biology, Chemistry, Physics, and Environmental Sciences. Home to the Advanced Microscopy Suite.",
+        amenities: ["Labs", "Clean Rooms", "Lecture Halls", "Accessible", "Lockers"],
+        hours: { Mon:"7:30 AM – 10:00 PM", Tue:"7:30 AM – 10:00 PM", Wed:"7:30 AM – 10:00 PM", Thu:"7:30 AM – 10:00 PM", Fri:"7:30 AM – 6:00 PM", Sat:"9:00 AM – 5:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-3300",
+        location: "East Academic Zone",
+      },
+      {
+        id: "eng",
+        name: "Engineering Building",
+        code: "ENG-03",
+        category: "academic",
+        emoji: "⚙️",
+        floors: 7,
+        isOpen: true,
+        description: "Workshops, fabrication labs, design studios, and lecture halls for all engineering disciplines. Features a rooftop observatory.",
+        amenities: ["Fab Lab", "3D Printing", "Workshop", "Project Rooms", "Accessible"],
+        hours: { Mon:"8:00 AM – 9:00 PM", Tue:"8:00 AM – 9:00 PM", Wed:"8:00 AM – 9:00 PM", Thu:"8:00 AM – 9:00 PM", Fri:"8:00 AM – 6:00 PM", Sat:"10:00 AM – 4:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-5500",
+        location: "West Campus, Engineering Row",
+      },
+      {
+        id: "arts",
+        name: "Arts & Humanities",
+        code: "ART-04",
+        category: "academic",
+        emoji: "🎨",
+        floors: 4,
+        isOpen: false,
+        description: "Creative studios, performance spaces, galleries, and seminar rooms for Arts, Literature, History, and Philosophy departments.",
+        amenities: ["Gallery", "Studios", "Seminar Rooms", "Piano Rooms", "Accessible"],
+        hours: { Mon:"9:00 AM – 8:00 PM", Tue:"9:00 AM – 8:00 PM", Wed:"9:00 AM – 8:00 PM", Thu:"9:00 AM – 8:00 PM", Fri:"9:00 AM – 5:00 PM", Sat:"10:00 AM – 3:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-6600",
+        location: "South Quad",
+      },
+      {
+        id: "admin",
+        name: "Administration Office",
+        code: "ADM-05",
+        category: "admin",
+        emoji: "🏛️",
+        floors: 3,
+        isOpen: true,
+        description: "Central hub for registrar, financial aid, student records, and university administration. The President's Office is on the top floor.",
+        amenities: ["Registrar", "Financial Aid", "Records", "Notary", "Accessible"],
+        hours: { Mon:"8:30 AM – 5:00 PM", Tue:"8:30 AM – 5:00 PM", Wed:"8:30 AM – 5:00 PM", Thu:"8:30 AM – 5:00 PM", Fri:"8:30 AM – 4:30 PM", Sat:"Closed", Sun:"Closed" },
+        phone: "+1 (555) 201-1000",
+        location: "Central Campus, Main Entrance",
+      },
+      {
+        id: "finance",
+        name: "Finance & Bursar",
+        code: "FIN-06",
+        category: "admin",
+        emoji: "💳",
+        floors: 2,
+        isOpen: true,
+        description: "Handles tuition payments, student billing, scholarship disbursement, and financial planning consultations.",
+        amenities: ["ATM", "Payment Kiosk", "Consultation Rooms", "Accessible"],
+        hours: { Mon:"9:00 AM – 4:30 PM", Tue:"9:00 AM – 4:30 PM", Wed:"9:00 AM – 4:30 PM", Thu:"9:00 AM – 4:30 PM", Fri:"9:00 AM – 3:30 PM", Sat:"Closed", Sun:"Closed" },
+        phone: "+1 (555) 201-2200",
+        location: "Admin Complex, Building B",
+      },
+      {
+        id: "student-union",
+        name: "Student Union",
+        code: "STU-07",
+        category: "student",
+        emoji: "🏠",
+        floors: 3,
+        isOpen: true,
+        description: "The social heart of campus. Home to dining, student clubs, the bookstore, lounges, and event spaces hosting hundreds of activities each year.",
+        amenities: ["Dining Hall", "Bookstore", "Lounge", "Game Room", "Event Space", "Accessible"],
+        hours: { Mon:"7:00 AM – 11:00 PM", Tue:"7:00 AM – 11:00 PM", Wed:"7:00 AM – 11:00 PM", Thu:"7:00 AM – 11:00 PM", Fri:"7:00 AM – 12:00 AM", Sat:"8:00 AM – 12:00 AM", Sun:"9:00 AM – 10:00 PM" },
+        phone: "+1 (555) 201-7700",
+        location: "Central Campus, South End",
+      },
+      {
+        id: "health",
+        name: "Health Center",
+        code: "HLT-08",
+        category: "student",
+        emoji: "🏥",
+        floors: 2,
+        isOpen: true,
+        description: "Full-service student health clinic offering primary care, mental health counseling, pharmacy services, and wellness programs.",
+        amenities: ["Clinic", "Pharmacy", "Counseling", "Waiting Room", "Accessible"],
+        hours: { Mon:"8:00 AM – 6:00 PM", Tue:"8:00 AM – 6:00 PM", Wed:"8:00 AM – 6:00 PM", Thu:"8:00 AM – 6:00 PM", Fri:"8:00 AM – 5:00 PM", Sat:"10:00 AM – 2:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-8800",
+        location: "West Campus",
+      },
+      {
+        id: "housing",
+        name: "Housing Office",
+        code: "HOU-09",
+        category: "student",
+        emoji: "🏘️",
+        floors: 2,
+        isOpen: false,
+        description: "Manages on-campus residential assignments, maintenance requests, and housing contracts for all university accommodations.",
+        amenities: ["Front Desk", "Mail Room", "Accessible"],
+        hours: { Mon:"9:00 AM – 5:00 PM", Tue:"9:00 AM – 5:00 PM", Wed:"9:00 AM – 5:00 PM", Thu:"9:00 AM – 5:00 PM", Fri:"9:00 AM – 4:00 PM", Sat:"Closed", Sun:"Closed" },
+        phone: "+1 (555) 201-9900",
+        location: "Residential Zone, East",
+      },
+      {
+        id: "gym",
+        name: "Recreation Center",
+        code: "REC-10",
+        category: "athletics",
+        emoji: "🏋️",
+        floors: 4,
+        isOpen: true,
+        description: "World-class fitness facility with Olympic pool, climbing wall, weight rooms, cardio decks, court sports, and intramural leagues.",
+        amenities: ["Pool", "Climbing Wall", "Weight Room", "Courts", "Lockers", "Sauna"],
+        hours: { Mon:"6:00 AM – 11:00 PM", Tue:"6:00 AM – 11:00 PM", Wed:"6:00 AM – 11:00 PM", Thu:"6:00 AM – 11:00 PM", Fri:"6:00 AM – 10:00 PM", Sat:"7:00 AM – 9:00 PM", Sun:"8:00 AM – 8:00 PM" },
+        phone: "+1 (555) 201-1010",
+        location: "Athletics Zone, North Campus",
+      },
+      {
+        id: "stadium",
+        name: "Athletics Stadium",
+        code: "ATH-11",
+        category: "athletics",
+        emoji: "🏟️",
+        floors: 3,
+        isOpen: false,
+        description: "15,000-seat multi-use stadium hosting football, track & field, soccer, and major campus events. The pride of our athletics program.",
+        amenities: ["Seating", "Concessions", "Press Box", "Accessible", "First Aid"],
+        hours: { Mon:"Closed", Tue:"Closed", Wed:"Closed", Thu:"Closed", Fri:"Event days only", Sat:"Event days only", Sun:"Event days only" },
+        phone: "+1 (555) 201-1111",
+        location: "Far North Campus",
+      },
+      {
+        id: "aquatics",
+        name: "Aquatics Center",
+        code: "AQU-12",
+        category: "athletics",
+        emoji: "🏊",
+        floors: 2,
+        isOpen: true,
+        description: "Olympic 50m competition pool and warm-up pool. Home to the university swim team, water polo, and open recreational lap swimming.",
+        amenities: ["50m Pool", "Warm-up Pool", "Lockers", "Spectator Seating", "Accessible"],
+        hours: { Mon:"6:00 AM – 9:00 PM", Tue:"6:00 AM – 9:00 PM", Wed:"6:00 AM – 9:00 PM", Thu:"6:00 AM – 9:00 PM", Fri:"6:00 AM – 8:00 PM", Sat:"8:00 AM – 6:00 PM", Sun:"9:00 AM – 5:00 PM" },
+        phone: "+1 (555) 201-1212",
+        location: "Athletics Zone, West",
+      },
+      {
+        id: "maintenance",
+        name: "Facilities & Operations",
+        code: "FAC-13",
+        category: "facilities",
+        emoji: "🔧",
+        floors: 1,
+        isOpen: true,
+        description: "Manages campus maintenance, utilities, groundskeeping, and custodial services. Report maintenance issues at the front desk.",
+        amenities: ["Service Desk", "Parts Store", "Loading Dock"],
+        hours: { Mon:"7:00 AM – 5:00 PM", Tue:"7:00 AM – 5:00 PM", Wed:"7:00 AM – 5:00 PM", Thu:"7:00 AM – 5:00 PM", Fri:"7:00 AM – 4:00 PM", Sat:"On-call only", Sun:"On-call only" },
+        phone: "+1 (555) 201-1313",
+        location: "Service Road, West Campus",
+      },
+      {
+        id: "it",
+        name: "IT & Computing Center",
+        code: "ITC-14",
+        category: "facilities",
+        emoji: "💻",
+        floors: 3,
+        isOpen: true,
+        description: "Provides IT support, computer labs, software licenses, network services, and technology consultation for all students and staff.",
+        amenities: ["Computer Labs", "Help Desk", "Printing", "Equipment Loans", "Accessible"],
+        hours: { Mon:"8:00 AM – 8:00 PM", Tue:"8:00 AM – 8:00 PM", Wed:"8:00 AM – 8:00 PM", Thu:"8:00 AM – 8:00 PM", Fri:"8:00 AM – 6:00 PM", Sat:"10:00 AM – 4:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-1414",
+        location: "Central Campus, Tech Row",
+      },
+      {
+        id: "security",
+        name: "Campus Security",
+        code: "SEC-15",
+        category: "facilities",
+        emoji: "🛡️",
+        floors: 1,
+        isOpen: true,
+        description: "24/7 campus safety and security services, including emergency response, lost & found, parking enforcement, and safety escorts.",
+        amenities: ["24/7 Service", "Lost & Found", "Parking Office", "Safety Escort"],
+        hours: { Mon:"24 hours", Tue:"24 hours", Wed:"24 hours", Thu:"24 hours", Fri:"24 hours", Sat:"24 hours", Sun:"24 hours" },
+        phone: "+1 (555) 201-9111",
+        location: "Main Gate, Campus Entrance",
+      },
+      {
+        id: "chapel",
+        name: "Memorial Chapel",
+        code: "CHP-16",
+        category: "student",
+        emoji: "⛪",
+        floors: 2,
+        isOpen: true,
+        description: "A serene, non-denominational space for reflection, meditation, religious services, and intimate gatherings. Open to all faiths.",
+        amenities: ["Quiet Space", "Meditation Room", "Event Bookings", "Accessible"],
+        hours: { Mon:"8:00 AM – 9:00 PM", Tue:"8:00 AM – 9:00 PM", Wed:"8:00 AM – 9:00 PM", Thu:"8:00 AM – 9:00 PM", Fri:"8:00 AM – 9:00 PM", Sat:"9:00 AM – 9:00 PM", Sun:"9:00 AM – 9:00 PM" },
+        phone: "+1 (555) 201-1616",
+        location: "South Garden, Central Campus",
+      },
+    ];
+
+    // ── STATE ──
+    let currentFilter = 'all';
+    let currentView = 'grid';
+    let currentSearch = '';
+    let selectedBuilding = null;
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const todayKey = days[new Date().getDay()];
+
+    // ── FILTER + RENDER ──
+    function getFiltered() {
+      return buildings.filter(b => {
+        const matchCat = currentFilter === 'all' || b.category === currentFilter;
+        const q = currentSearch.toLowerCase();
+        const matchSearch = !q ||
+          b.name.toLowerCase().includes(q) ||
+          b.code.toLowerCase().includes(q) ||
+          b.category.toLowerCase().includes(q) ||
+          b.description.toLowerCase().includes(q) ||
+          b.location.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
+    }
+
+    function renderAll() {
+      const filtered = getFiltered();
+      document.getElementById('resultsCount').innerHTML = `<strong>${filtered.length}</strong> building${filtered.length !== 1 ? 's' : ''}`;
+      renderGrid(filtered);
+      renderList(filtered);
+      document.getElementById('emptyState').classList.toggle('visible', filtered.length === 0);
+      if (selectedBuilding && !filtered.find(b => b.id === selectedBuilding.id)) {
+        closeDetail();
+      }
+      // Stagger in
+      requestAnimationFrame(() => {
+        const cards = document.querySelectorAll('.b-card, .b-list-card');
+        cards.forEach((c, i) => {
+          c.style.transitionDelay = `${i * 0.04}s`;
+          requestAnimationFrame(() => c.classList.add('visible'));
+        });
+      });
+    }
+
+    function catClass(cat) {
+      const m = { academic:'academic', admin:'admin', student:'student', athletics:'athletics', facilities:'facilities' };
+      return m[cat] || 'academic';
+    }
+
+    function renderGrid(filtered) {
+      const grid = document.getElementById('gridView');
+      grid.innerHTML = filtered.map(b => `
+        <div class="b-card ${selectedBuilding?.id === b.id ? 'selected' : ''}" data-id="${b.id}" onclick="selectBuilding('${b.id}')">
+          <div class="b-card-banner banner-${catClass(b.category)}">
+            <span>${b.emoji}</span>
+            <span class="b-card-status ${b.isOpen ? 'open' : 'closed'}">${b.isOpen ? 'Open' : 'Closed'}</span>
+          </div>
+          <div class="b-card-body">
+            <div class="b-card-type cat-${catClass(b.category)}">${b.category}</div>
+            <div class="b-card-name">${b.name}</div>
+            <div class="b-card-code">${b.code}</div>
+            <p class="b-card-desc">${b.description}</p>
+            <div class="b-card-footer">
+              <div class="b-card-floors">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                ${b.floors} floor${b.floors !== 1 ? 's' : ''}
+              </div>
+              <button class="b-card-nav-btn" onclick="event.stopPropagation(); goToMap('${b.id}')">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                Navigate
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderList(filtered) {
+      const list = document.getElementById('listView');
+      list.innerHTML = filtered.map(b => `
+        <div class="b-list-card ${selectedBuilding?.id === b.id ? 'selected' : ''}" data-id="${b.id}" onclick="selectBuilding('${b.id}')">
+          <div class="b-list-icon bg-${catClass(b.category)}">${b.emoji}</div>
+          <div class="b-list-info">
+            <div class="b-list-name">${b.name}</div>
+            <div class="b-list-meta">
+              <span>${b.code}</span>
+              <span>${b.location}</span>
+              <span>${b.floors} floors</span>
+            </div>
+          </div>
+          <div class="b-list-right">
+            <span class="b-list-status ${b.isOpen ? 'open' : 'closed'}">${b.isOpen ? '● Open now' : '● Closed'}</span>
+            <div class="b-list-floors">${b.category}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── DETAIL PANEL ──
+    function selectBuilding(id) {
+      const b = buildings.find(x => x.id === id);
+      if (!b) return;
+      selectedBuilding = b;
+      document.querySelectorAll('.b-card, .b-list-card').forEach(el => {
+        el.classList.toggle('selected', el.dataset.id === id);
+      });
+      renderDetail(b);
+      document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function renderDetail(b) {
+      const panel = document.getElementById('detailPanel');
+      panel.classList.add('open');
+
+      document.getElementById('detailMain').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
+          <span class="detail-badge bg-${catClass(b.category)} cat-${catClass(b.category)}">${b.emoji} ${b.category}</span>
+          <button class="btn-close-detail" onclick="closeDetail()" title="Close">✕</button>
+        </div>
+        <h2 class="detail-title">${b.name}</h2>
+        <div class="detail-code">${b.code} · ${b.location}</div>
+        <p class="detail-desc">${b.description}</p>
+        <div class="detail-meta">
+          <div class="meta-item">
+            <div class="meta-label">Floors</div>
+            <div class="meta-value">${b.floors} floors</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-value" style="color:${b.isOpen ? 'var(--moss)' : 'var(--red)'}">${b.isOpen ? 'Open Now' : 'Closed'}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Phone</div>
+            <div class="meta-value" style="font-size:0.8rem">${b.phone}</div>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn-nav" onclick="goToMap('${b.id}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Get Directions
+          </button>
+          <button class="btn-outline" onclick="copyAddress('${b.location}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Location
+          </button>
+          <button class="btn-outline">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+        </div>
+      `;
+
+      const hoursRows = Object.entries(b.hours).map(([day, time]) => `
+        <div class="hours-row ${day === todayKey ? 'today' : ''}">
+          <span class="hours-day">${day === todayKey ? '▶ ' : ''}${day}</span>
+          <span class="hours-time">${time}</span>
+        </div>
+      `).join('');
+
+      const amenityTags = b.amenities.map(a => `<span class="amenity-tag">${a}</span>`).join('');
+
+      document.getElementById('detailSidebar').innerHTML = `
+        <div class="sidebar-section">
+          <div class="sidebar-title">Today's Hours</div>
+          <div class="status-pill ${b.isOpen ? 'status-open' : 'status-closed'}">
+            <span class="status-dot"></span>
+            ${b.isOpen ? 'Open Now' : 'Currently Closed'}
+          </div>
+          <div class="hours-list">${hoursRows}</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Amenities & Services</div>
+          <div class="amenities-list">${amenityTags}</div>
+        </div>
+      `;
+    }
+
+    function closeDetail() {
+      document.getElementById('detailPanel').classList.remove('open');
+      selectedBuilding = null;
+      document.querySelectorAll('.b-card, .b-list-card').forEach(el => el.classList.remove('selected'));
+    }
+
+    function goToMap(id) {
+      window.location.href = `map.html?building=${id}`;
+    }
+
+    function copyAddress(loc) {
+      navigator.clipboard?.writeText(loc);
+      // Brief feedback
+      const btns = document.querySelectorAll('.btn-outline');
+      btns.forEach(b => { if (b.textContent.includes('Copy')) { b.textContent = '✓ Copied!'; setTimeout(() => { b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Location'; }, 1500); } });
+    }
+
+    // ── EVENT LISTENERS ──
+    document.getElementById('searchInput').addEventListener('input', e => {
+      currentSearch = e.target.value;
+      renderAll();
+    });
+
+    document.getElementById('filterTabs').addEventListener('click', e => {
+      const tab = e.target.closest('.filter-tab');
+      if (!tab) return;
+      currentFilter = tab.dataset.filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderAll();
+    });
+
+    document.getElementById('gridViewBtn').addEventListener('click', () => {
+      currentView = 'grid';
+      document.getElementById('gridViewBtn').classList.add('active');
+      document.getElementById('listViewBtn').classList.remove('active');
+      document.getElementById('gridView').style.display = 'grid';
+      document.getElementById('listView').style.display = 'none';
+    });
+
+    document.getElementById('listViewBtn').addEventListener('click', () => {
+      currentView = 'list';
+      document.getElementById('listViewBtn').classList.add('active');
+      document.getElementById('gridViewBtn').classList.remove('active');
+      document.getElementById('gridView').style.display = 'none';
+      document.getElementById('listView').style.display = 'flex';
+      renderAll();
+    });
+
+    // ── URL PARAMS ──
+    const params = new URLSearchParams(window.location.search);
+    const urlQ = params.get('q');
+    const urlId = params.get('id');
+    if (urlQ) {
+      currentSearch = urlQ;
+      document.getElementById('searchInput').value = urlQ;
+    }
+
+    // ── INIT ──
+    renderAll();
+
+    if (urlId) {
+      setTimeout(() => selectBuilding(urlId), 150);
+    }
+  </script>
+</body>
+</html>
