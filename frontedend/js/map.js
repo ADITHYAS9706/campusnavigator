@@ -1,10 +1,20 @@
 let map;
 
 function initMap(){
+    const bounds = {
+north: 13.972,
+south: 13.969,
+east: 75.568,
+west: 75.564
+};
 
 map = new google.maps.Map(document.getElementById("map"),{
-center:{lat:12.9716,lng:77.5946},
-zoom:16
+center: { lat: 13.9705, lng: 75.5663 },
+zoom: 17,
+restriction: {
+latLngBounds: bounds,
+strictBounds: true
+}
 });
 
 fetch("http://localhost:5000/buildings")
