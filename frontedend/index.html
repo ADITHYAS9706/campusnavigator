@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Campus Navigation</title>
+<link rel="stylesheet" href="css/style.css">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Navigator</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:0;
+            background:#f4f6f9;
+        }
+
+        header{
+            background-image: url('background.jpg'); /* Use your uploaded image */
+            background-size: cover;       /* Make sure image covers header */
+            background-position: center;  /* Center the image */
+            color:white;
+            padding:60px 15px;            /* More padding for visibility */
+            text-align:center;
+            position: relative;
+        }
+
+        /* Add a dark overlay for better text readability */
+        header::before {
+            background-image: url('background.jpg'); /* Use your uploaded image */
+            background-size: cover;       /* Make sure image covers header */
+            background-position: center;  /* Center the image */
+            color:white;
+            content: "";
+            position: absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background: rgba(0,0,0,0.5); /* semi-transparent black overlay */
+            z-index: 0;
+        }
+
+        header h1, header p {
+            position: relative;
+            z-index: 1; /* Keep text above overlay */
+        }
+
+        nav{
+            background:#34495e;
+            padding:10px;
+            text-align:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:0 15px;
+            font-size:18px;
+        }
+
+        nav a:hover{
+            color:#f1c40f;
+        }
+
+        .hero{
+            text-align:center;
+            padding:40px;
+            background:#3498db;
+            color:white;
+        }
+
+        .search-box{
+            margin-top:20px;
+        }
+
+        .search-box input{
+            padding:10px;
+            width:250px;
+            border:none;
+            border-radius:5px;
+        }
+
+        .search-box button{
+            padding:10px 15px;
+            border:none;
+            background:#2ecc71;
+            color:white;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .container{
+            padding:30px;
+            text-align:center;
+        }
+
+        .places{
+            display:flex;
+            justify-content:center;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            width:200px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .card:hover{
+            transform:scale(1.05);
+            transition:0.3s;
+        }
+
+        footer{
+            background:#2c3e50;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:30px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+<h1>Campus Navigation System</h1>
+
+<input type="text" id="searchInput" placeholder="Search building...">
+<button onclick="searchBuilding()">Search</button>
+
+<br><br>
+
+<a href="map.html">Open Campus Map</a>
+
+<script src="js/search.js"></script>
+
+<header>
+    <h1>Campus Navigator</h1>
+    <p>Find your way around campus easily</p>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">Map</a>
+    <a href="#">Departments</a>
+    <a href="#">Facilities</a>
+    <a href="#">Contact</a>
+</nav>
+
+<section class="hero">
+    <h2>Search Campus Locations</h2>
+
+    <div class="search-box">
+        <input type="text" placeholder="Enter building name...">
+        <button>Search</button>
+    </div>
+</section>
+
+<div class="container">
+    <h2>Popular Locations</h2>
+
+    <div class="places">
+
+        <div class="card">
+            <h3>Library</h3>
+            <p>Study and research center.</p>
+        </div>
+
+        <div class="card">
+            <h3>Cafeteria</h3>
+            <p>Food and refreshments.</p>
+        </div>
+
+        <div class="card">
+            <h3>Computer Lab</h3>
+            <p>Programming and lab sessions.</p>
+        </div>
+
+        <div class="card">
+            <h3>Admin Block</h3>
+            <p>Administrative services.</p>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Campus Navigator | Hackathon Project</p>
+</footer>
+
+
+</body>
+</html>

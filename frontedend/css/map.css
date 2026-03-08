@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body{
 font-family: Arial, sans-serif;
 text-align:center;
@@ -38,4 +39,11 @@ cursor:pointer;
 
 button:hover{
 background:#0056b3;
+=======
+#map{
+height:500px;
+width:90%;
+margin:auto;
+border:2px solid black;
+>>>>>>> d37a5be8cfed0ca7350b1d1f8b385f9e6b8b40ab
 }
