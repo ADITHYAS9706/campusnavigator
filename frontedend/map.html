@@ -1,32 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
-<title>Campus Map</title>
-
+<title>Campus Navigation</title>
 <link rel="stylesheet" href="css/map.css">
-
-<head>
-<title>Campus Map</title>
-<link rel="stylesheet" href="css/map.css">
-</head>
-
-<body>
-
-<h2>Campus Map</h2>
-
-<div id="map"></div>
-
-<script src="js/map.js"></script>
-
-
-<script async
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHMF5kXZ3ObBLPlp8juADAGwKMzzrAFSQ&callback=initMap">
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAnjnjf5BIsaDNJ-Wu400MAKUQYd9Mllc&callback=initMap">
-</script>
-
-
 </head>
 
 <body>
@@ -34,17 +11,49 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAnjnjf5BIsaDNJ-Wu400MAKU
 <h2>Campus Navigation</h2>
 
 <div class="search-box">
-<input type="text" id="search" placeholder="Search building">
-<button onclick="findBuilding()">Search</button>
+<input type="text" id="search" placeholder="Search your need">
+<select id="destination">
+<option value="" hidden>Select Destination</option>
+<option value="Library">Library</option>
+<option value="Canteen">Canteen</option>
+<option value="Admin Block">Admin Block</option>
+<option value="Cricket ground">Cricket ground</option>
+<option value="Basketball ground">Basketball ground</option>
+<option value="Boys hostel">Boys hostel</option>
+<option value="PES Polytecnic">PES Polytecnic</option>
+<option value="PES Bank">PES Bank</option>
+<option value="Gate one">Gate one</option>
+<option value="Gate two">Gate two</option>
+<option value="Old Building">Old Building</option>
+<option value="New Building">New Building</option>
+<option value="Bus Bay">Bus Bay</option>
+<option value="Parking">Parking</option>
+<option value="Prerana Conventional Hall">Prerana Conventional Hall</option>
+<option value="PES Public School">PES Public School</option>
+<option value="Public School Ground">Public School Ground</option>
+<option value="Enventure Engineering LLP">Enventure Engineering LLP</option>
+<option value="Girls hostel">Girls hostel</option>
+<option value="PES Headquarters">PES Headquarters</option>
+<option value="PES Institute of Advanced Management Studies">PES Institute of Advanced Management Studies</option>
+<option value="PES Instittute of Technology and Management">PES Instittute of Technology and Management</option>
+<option value="PES PUC">PES PUC</option>
+<option value="GYM">GYM</option>
+</select>
+
+<button id="button" onclick="findBuilding()">Search</button>
+<button id="nav" onclick="startNavigation()">Navigate</button>
+
 </div>
 
-<button onclick="navigateTo({lat:12.9720,lng:77.5950})">
-Navigate to Library
-</button>
+<div id="map"></div>
 
 <script src="js/map.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/search.js"></script>
 
-</body>
+<script async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBThIri_lGsjOexHAOpEwEL8k3CpRHvDIU&callback=initMap">
+</script>
 
 </body>
 
