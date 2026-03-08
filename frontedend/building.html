@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Buildings — CampusNav</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+<a href="index.html" class="nav-logo">Campus<span>Nav</span></a>
+
+<ul class="nav-links">
+<li><a href="map.html">Map</a></li>
+<li><a href="building.html" class="active">Buildings</a></li>
+<li><a href="#">Events</a></li>
+<li><a href="#">About</a></li>
+<li><a href="map.html" class="nav-cta">Open Map →</a></li>
+</ul>
+
+</nav>
+
+
+<header class="page-header">
+
+<div class="header-inner">
+
+<div class="breadcrumb">
+<a href="index.html">Home</a>
+<span class="breadcrumb-sep">›</span>
+<span>Buildings</span>
+</div>
+
+<h1 class="page-title">Campus <em>Buildings</em></h1>
+
+<p class="page-subtitle">
+Explore all facilities, departments, and spaces across campus.
+</p>
+
+</div>
+</header>
+
+
+<!-- SEARCH + FILTER -->
+<div class="controls-bar">
+
+<div class="controls-inner">
+
+<div class="search-wrap">
+
+<input type="text" id="searchInput"
+placeholder="Search buildings..." />
+
+</div>
+
+<div class="filter-tabs" id="filterTabs">
+
+<button class="filter-tab active"
+data-filter="all">All</button>
+
+<button class="filter-tab"
+data-filter="academic">Academic</button>
+
+<button class="filter-tab"
+data-filter="admin">Admin</button>
+
+<button class="filter-tab"
+data-filter="student">Student Life</button>
+
+</div>
+
+<div class="results-count"
+id="resultsCount">0 buildings</div>
+
+</div>
+</div>
+
+
+<main class="main">
+
+<div class="detail-panel" id="detailPanel">
+<div class="detail-main" id="detailMain"></div>
+<div class="detail-sidebar" id="detailSidebar"></div>
+</div>
+
+<div class="buildings-grid" id="gridView"></div>
+
+<div class="buildings-list"
+id="listView" style="display:none;"></div>
+
+<div class="empty-state" id="emptyState">
+
+<div class="empty-icon">🔍</div>
+
+<div class="empty-title">
+No buildings found
+</div>
+
+</div>
+
+</main>
+
+
+<footer>
+
+<div class="footer-brand">
+Campus<span>Nav</span>
+</div>
+
+<div class="footer-copy">
+© 2025 CampusNav
+</div>
+
+</footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
