@@ -1,12 +1,29 @@
-function searchBuilding(){
+function findBuilding(){
 
-let building = document.getElementById("searchInput").value;
+let input = document.getElementById("search").value.toLowerCase();
 
-if(building === ""){
-alert("Enter building name");
-return;
+let result = buildings.find(
+b => b.name.toLowerCase().includes(input)
+);
+
+if(result){
+
+map.setCenter({
+lat:result.lat,
+lng:result.lng
+});
+
+map.setZoom(18);
+
+new google.maps.Marker({
+position:{lat:result.lat,lng:result.lng},
+map:map,
+title:result.name
+});
+
 }
-
-window.location.href = "map.html?building=" + building;
+else{
+alert("Building not found");
+}
 
 }
