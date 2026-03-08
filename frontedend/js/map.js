@@ -19,10 +19,7 @@ west: 75.564
 map = new google.maps.Map(document.getElementById("map"),{
 center: { lat: 13.9705, lng: 75.5663 },
 zoom: 17,
-restriction: {
-latLngBounds: bounds,
-strictBounds: true
-}
+
 });
 
 fetch("http://localhost:5000/buildings")
