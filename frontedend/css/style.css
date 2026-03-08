@@ -1,14 +1,39 @@
+*,
+*::before,
+*::after {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+:root {
+
+--cream: #F5F0E8;
+--ink: #1A1612;
+--bark: #3D2B1F;
+--moss: #4A6741;
+--gold: #C8992A;
+--sand: #E8D9C0;
+
+}
+
 body{
-font-family: Arial;
-text-align:center;
+
+background-color: var(--cream);
+color: var(--ink);
+font-family: 'DM Sans', sans-serif;
+
 }
 
-input{
-padding:10px;
-width:250px;
+/* NAV */
+
+nav{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+
 }
 
-button{
-padding:10px;
-cursor:pointer;
-}
+/* continue rest of your CSS here */
