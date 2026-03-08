@@ -1,45 +1,75 @@
 let map;
 let geocoder;
 
-
 const campus = {
-lat:13.961961,
-lng:75.509455
+  lat: 13.961961,
+  lng: 75.509455
 };
 
-function initMap(){
-    const bounds = {
-north: 13.972,
-south: 13.969,
-east: 75.568,
-west: 75.564
-};
+function initMap() {
 
+  // Create map
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: campus,
+    zoom: 18,
+    mapTypeId: "satellite"
+  });
 
-map = new google.maps.Map(document.getElementById("map"),{
-center: { lat: 13.9705, lng: 75.5663 },
-zoom: 17,
+  // Initialize geocoder
+  geocoder = new google.maps.Geocoder();
 
-});
+  // Campus marker
+  new google.maps.Marker({
+    position: campus,
+    map: map,
+    title: "Campus"
+  });
 
-fetch("http://localhost:5000/buildings")
-.then(res=>res.json())
-.then(data=>{
+  // Restrict map to campus area
+  map.setOptions({
+    restriction: {
+      latLngBounds: {
+        north: 13.963673,
+        south: 13.960295,
+        east: 75.512621,
+        west: 75.506350
+      },
+      strictBounds: false
+    }
+  });
 
-data.forEach(building => {
+  // Load buildings from backend
+  fetch("http://localhost:5000/buildings")
+    .then(res => res.json())
+    .then(data => {
 
-map = new google.maps.Map(
-document.getElementById("map"),
-{
-zoom:18,
-center:campus,
-mapTypeId:"satellite"
+      data.forEach(building => {
+
+        new google.maps.Marker({
+          position: {
+            lat: building.lat,
+            lng: building.lng
+          },
+          map: map,
+          title: building.name
+        });
+
+      });
+
+    });
+
 }
-);
 
+
+// 🔎 Search place anywhere
 function searchPlace() {
 
   const place = document.getElementById("placeInput").value;
+
+  if (!place) {
+    alert("Enter a place");
+    return;
+  }
 
   geocoder.geocode({ address: place }, function(results, status) {
 
@@ -61,26 +91,52 @@ function searchPlace() {
 }
 
 
-// campus marker
-new google.maps.Marker({
-position:campus,
-map:map,
-title:"Campus"
-});
+// 🏫 Search building inside campus
+function findBuilding() {
 
-// restrict map to campus area
-map.setOptions({
-restriction:{
-latLngBounds:{
-north:13.963673,
-south:13.964295,
-east:75.512621,
-west:75.506350
-},
-strictBounds:false
+  const buildingName = document.getElementById("search").value.toLowerCase();
+
+  fetch("http://localhost:5000/buildings")
+    .then(res => res.json())
+    .then(data => {
+
+      const building = data.find(b =>
+        b.name.toLowerCase() === buildingName
+      );
+
+      if (building) {
+
+        const location = {
+          lat: building.lat,
+          lng: building.lng
+        };
+
+        map.setCenter(location);
+
+        new google.maps.Marker({
+          position: location,
+          map: map,
+          title: building.name
+        });
+
+      } else {
+        alert("Building not found");
+      }
+
+    });
+
 }
-});
 
-});
-});
+
+// 🧭 Navigation to location
+function navigateTo(destination) {
+
+  map.setCenter(destination);
+
+  new google.maps.Marker({
+    position: destination,
+    map: map,
+    title: "Destination"
+  });
+
 }

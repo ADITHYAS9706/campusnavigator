@@ -1,31 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-
 <head>
 <title>Campus Map</title>
 
 <link rel="stylesheet" href="css/map.css">
-
-<head>
-<title>Campus Map</title>
-<link rel="stylesheet" href="css/map.css">
-</head>
-
-<body>
-
-<h2>Campus Map</h2>
-
-<div id="map"></div>
-
-<script src="js/map.js"></script>
-
-
-<script async
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHMF5kXZ3ObBLPlp8juADAGwKMzzrAFSQ&callback=initMap">
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAnjnjf5BIsaDNJ-Wu400MAKUQYd9Mllc&callback=initMap">
-</script>
-
 
 </head>
 
@@ -33,23 +12,65 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAnjnjf5BIsaDNJ-Wu400MAKU
 
 <h2>Campus Navigation</h2>
 
+<!-- Building Search -->
 <div class="search-box">
 <input type="text" id="search" placeholder="Search building">
 <button onclick="findBuilding()">Search</button>
 </div>
 
-<input id="placeInput" type="text" placeholder="Search place..." />
+<!-- Place Search -->
+<div class="search-box">
+<input type="text" id="placeInput" placeholder="Search place">
 <button onclick="searchPlace()">Search</button>
+</div>
 
+<!-- Google Map -->
 <div id="map"></div>
+
+<br>
 
 <button onclick="navigateTo({lat:12.9720,lng:77.5950})">
 Navigate to Library
 </button>
 
-<script src="js/map.js"></script>
+<hr>
 
-</body>
+<h2>Indoor Navigation</h2>
+
+<!-- Floor selector -->
+ <h3>Select Floor from old building</h3>
+<select id="floorSelect" onchange="changeFloor()">
+<option value="ground">Ground Floor</option>
+<option value="first">First Floor</option>
+<option value="second">Second Floor</option>
+<option value="third">Third Floor</option>
+<option value="fourth">Fourth Floor</option>
+</select>
+<h3>New Building Floors</h3>
+<select id="floorSelectNew" onchange="changeFloorNew()">
+<option value="ground">Ground Floor</option>
+<option value="first">First Floor</option>
+<option value="second">Second Floor</option>
+<option value="third">Third Floor</option>
+</select>
+
+<br><br>
+
+<div id="mapContainer">
+
+<img id="floorMap" src="assets/maps/ground-floor.png" width="700">
+
+</div>
+
+<div id="navigationInfo"></div>
+
+<!-- Scripts -->
+<script src="js/map.js"></script>
+<script src="js/navigation.js"></script>
+
+<script async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBThIri_lGsjOexHAOpEwEL8k3CpRHvDIU&callback=initMap">
+</script>
 
 </body>
 
