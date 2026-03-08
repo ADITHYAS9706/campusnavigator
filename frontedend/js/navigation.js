@@ -116,3 +116,34 @@ directionsRenderer.setDirections(result);
 
 
 }
+
+function changeFloor(){
+
+let floor = document.getElementById("floorSelect").value;
+
+let images = {
+ground: "assets/images/image.jpeg",
+first: "assets/images/image5.jpeg",
+second: "assets/images/image4.jpeg",
+third: "assets/images/image3.jpeg",
+fourth: "assets/images/image2.jpeg"
+};
+
+document.getElementById("floorMap").src = images[floor];
+
+}
+
+function changeFloorNew(){
+
+let floor = document.getElementById("floorSelectNew").value;
+
+let images = {
+ground: "assets/images/newgf.jpeg",
+first: "assets/images/newff.jpeg",
+second: "assets/images/newsf.jpeg",
+third: "assets/images/newtf.jpeg"
+};
+
+document.getElementById("floorMap").src = images[floor];
+
+}

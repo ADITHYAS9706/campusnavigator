@@ -196,12 +196,7 @@ function initMap() {
   // Initialize geocoder
   geocoder = new google.maps.Geocoder();
 
-  // Campus marker
-  new google.maps.Marker({
-    position: campus,
-    map: map,
-    title: "Campus"
-  });
+ 
 
   // Restrict map to campus area
   map.setOptions({
