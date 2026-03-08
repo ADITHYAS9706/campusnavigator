@@ -1,38 +1,39 @@
 body{
-margin:0;
-font-family:Arial, sans-serif;
+font-family:Arial;
+text-align:center;
+background:#f5f5f5;
 }
 
 
 /* Google map container */
 #map{
+
 height:70vh;
+
+height:500px;
+
 width:100%;
+margin-top:10px;
+border-radius:10px;
 }
 
 
 /* Search box on top of map */
 .search-box{
-position:absolute;
-top:10px;
-left:50%;
-transform:translateX(-50%);
-background:white;
-padding:10px;
-border-radius:6px;
-box-shadow:0 2px 6px rgba(0,0,0,0.3);
-z-index:5;
+margin:15px;
 }
+
 
 
 /* Search input */
 .search-box input{
-padding:8px;
-width:200px;
-border:1px solid #ccc;
-border-radius:4px;
-}
 
+input,select,button{
+
+padding:8px;
+margin:5px;
+}
+}
 
 /* Search button */
 .search-box button{
@@ -75,4 +76,47 @@ left:0;
 width:700px;
 height:500px;
 pointer-events:none;
+}
+#searching{
+   background-color: rgb(87, 86, 86);
+}
+
+.search-box{
+    background: linear-gradient(135deg, #17c7c7, #000000);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    padding:10px;
+
+}
+
+#destination{
+    background-color: rgb(134, 204, 227);
+    border-radius: 10px;
+    border:solid 1px black;
+}
+
+#search{
+    background-color:antiquewhite;
+    border-radius: 10px;
+    border:solid 1px black;
+
+}
+
+#button{
+    background-color: rgb(231, 213, 213);
+    border-radius: 10px;
+    border:solid 1px black;
+}
+
+#nav{
+    background-color: rgb(231, 213, 213);
+    border-radius: 10px;
+    border:solid 1px black;
+}
+
+body{
+    background: linear-gradient(135deg, #17c7c7, #000000);
+
 }
