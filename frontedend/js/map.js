@@ -1,4 +1,6 @@
 let map;
+let geocoder;
+
 
 const campus = {
 lat:13.961961,
@@ -37,6 +39,29 @@ center:campus,
 mapTypeId:"satellite"
 }
 );
+
+function searchPlace() {
+
+  const place = document.getElementById("placeInput").value;
+
+  geocoder.geocode({ address: place }, function(results, status) {
+
+    if (status === "OK") {
+
+      map.setCenter(results[0].geometry.location);
+
+      new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location
+      });
+
+    } else {
+      alert("Place not found");
+    }
+
+  });
+
+}
 
 
 // campus marker
