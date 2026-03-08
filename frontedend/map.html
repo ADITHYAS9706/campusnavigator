@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Campus Map</title>
+
+<link rel="stylesheet" href="css/map.css">
+
+<script async
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHMF5kXZ3ObBLPlp8juADAGwKMzzrAFSQ&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAnjnjf5BIsaDNJ-Wu400MAKUQYd9Mllc&callback=initMap">
+</script>
+
+</head>
+
+<body>
+
+<h2>Campus Navigation</h2>
+
+<div class="search-box">
+<input type="text" id="search" placeholder="Search building">
+<button onclick="findBuilding()">Search</button>
+</div>
+
+<button onclick="navigateTo({lat:12.9720,lng:77.5950})">
+Navigate to Library
+</button>
+
+<script src="js/map.js"></script>
+
+</body>
+
+</html>
