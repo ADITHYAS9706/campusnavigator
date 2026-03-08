@@ -1,202 +1,1000 @@
 <!DOCTYPE html>
-
-<html>
-<head>
-<title>Campus Navigation</title>
-<link rel="stylesheet" href="css/style.css">
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Navigator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusNav — Find Your Way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        body{
-            font-family: Arial, sans-serif;
-            margin:0;
-            background:#f4f6f9;
-        }
+    :root {
+      --cream: #F5F0E8;
+      --ink: #1A1612;
+      --bark: #3D2B1F;
+      --moss: #4A6741;
+      --gold: #C8992A;
+      --sand: #E8D9C0;
+      --mist: #D4CABA;
+      --white: #FDFCF9;
+    }
 
-        header{
-            background-image: url('background.jpg'); /* Use your uploaded image */
-            background-size: cover;       /* Make sure image covers header */
-            background-position: center;  /* Center the image */
-            color:white;
-            padding:60px 15px;            /* More padding for visibility */
-            text-align:center;
-            position: relative;
-        }
+    html { scroll-behavior: smooth; }
 
-        /* Add a dark overlay for better text readability */
-        header::before {
-            background-image: url('background.jpg'); /* Use your uploaded image */
-            background-size: cover;       /* Make sure image covers header */
-            background-position: center;  /* Center the image */
-            color:white;
-            content: "";
-            position: absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            background: rgba(0,0,0,0.5); /* semi-transparent black overlay */
-            z-index: 0;
-        }
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
 
-        header h1, header p {
-            position: relative;
-            z-index: 1; /* Keep text above overlay */
-        }
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(245, 240, 232, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--mist);
+    }
 
-        nav{
-            background:#34495e;
-            padding:10px;
-            text-align:center;
-        }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--bark);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
 
-        nav a{
-            color:white;
-            text-decoration:none;
-            margin:0 15px;
-            font-size:18px;
-        }
+    .nav-logo span {
+      color: var(--moss);
+      font-style: italic;
+    }
 
-        nav a:hover{
-            color:#f1c40f;
-        }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
 
-        .hero{
-            text-align:center;
-            padding:40px;
-            background:#3498db;
-            color:white;
-        }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
 
-        .search-box{
-            margin-top:20px;
-        }
+    .nav-links a:hover { opacity: 1; }
 
-        .search-box input{
-            padding:10px;
-            width:250px;
-            border:none;
-            border-radius:5px;
-        }
+    .nav-cta {
+      background: var(--bark);
+      color: var(--cream) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2rem;
+      opacity: 1 !important;
+      transition: background 0.2s !important;
+    }
 
-        .search-box button{
-            padding:10px 15px;
-            border:none;
-            background:#2ecc71;
-            color:white;
-            border-radius:5px;
-            cursor:pointer;
-        }
+    .nav-cta:hover { background: var(--moss) !important; }
 
-        .container{
-            padding:30px;
-            text-align:center;
-        }
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 7rem 3rem 4rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .places{
-            display:flex;
-            justify-content:center;
-            gap:20px;
-            flex-wrap:wrap;
-        }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -10%; right: -5%;
+      width: 55%;
+      height: 110%;
+      background: radial-gradient(ellipse at 60% 40%, rgba(74,103,65,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse at 40% 70%, rgba(200,153,42,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
 
-        .card{
-            background:white;
-            padding:20px;
-            width:200px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
-        }
+    /* Decorative grid lines */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(61,43,31,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61,43,31,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
 
-        .card:hover{
-            transform:scale(1.05);
-            transition:0.3s;
-        }
+    .hero-text { position: relative; z-index: 1; }
 
-        footer{
-            background:#2c3e50;
-            color:white;
-            text-align:center;
-            padding:15px;
-            margin-top:30px;
-        }
-    </style>
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: slideUp 0.7s ease forwards 0.2s;
+    }
 
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1.5px;
+      background: var(--moss);
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--bark);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: slideUp 0.7s ease forwards 0.4s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--moss);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--ink);
+      opacity: 0;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      animation: slideUp 0.7s ease forwards 0.6s;
+    }
+
+    .hero-desc span { opacity: 0.6; }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      opacity: 0;
+      animation: slideUp 0.7s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bark);
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 3rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--moss);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--bark);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-bottom: 1.5px solid var(--bark);
+      padding-bottom: 0.1rem;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover { color: var(--moss); border-color: var(--moss); }
+
+    /* ── HERO VISUAL ── */
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeScale 0.9s ease forwards 0.5s;
+    }
+
+    .map-card {
+      background: var(--white);
+      border: 1px solid var(--mist);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow:
+        0 4px 6px rgba(26,22,18,0.04),
+        0 20px 60px rgba(26,22,18,0.1),
+        0 0 0 1px rgba(26,22,18,0.04);
+    }
+
+    .map-card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--sand);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--white);
+    }
+
+    .map-dots { display: flex; gap: 0.4rem; }
+    .map-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .map-dot:nth-child(1) { background: #E87060; }
+    .map-dot:nth-child(2) { background: #E8C460; }
+    .map-dot:nth-child(3) { background: #60C860; }
+
+    .map-search-bar {
+      flex: 1;
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: var(--ink);
+      opacity: 0.6;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Fake campus map SVG illustration */
+    .map-body {
+      width: 100%;
+      height: 320px;
+      background: #EDE8DF;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Floating info card */
+    .map-info-card {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1rem;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      box-shadow: 0 8px 24px rgba(26,22,18,0.12);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .info-icon {
+      width: 2.4rem; height: 2.4rem;
+      background: var(--moss);
+      border-radius: 0.6rem;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .info-text { line-height: 1.3; }
+    .info-name { font-size: 0.85rem; font-weight: 600; color: var(--bark); }
+    .info-sub { font-size: 0.72rem; color: var(--ink); opacity: 0.55; margin-top: 0.1rem; }
+
+    .map-eta {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: var(--gold);
+      color: var(--white);
+      border-radius: 2rem;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── QUICK SEARCH ── */
+    .quick-search {
+      padding: 3rem;
+      border-top: 1px solid var(--sand);
+      border-bottom: 1px solid var(--sand);
+      background: var(--white);
+    }
+
+    .qs-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .qs-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1.25rem;
+    }
+
+    .qs-input-wrap {
+      display: flex;
+      border: 1.5px solid var(--mist);
+      border-radius: 3rem;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: 0 4px 20px rgba(26,22,18,0.07);
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .qs-input-wrap:focus-within {
+      border-color: var(--moss);
+      box-shadow: 0 4px 24px rgba(74,103,65,0.15);
+    }
+
+    .qs-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 1rem 1.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .qs-input::placeholder { color: var(--mist); }
+
+    .qs-btn {
+      margin: 0.35rem;
+      background: var(--bark);
+      color: var(--cream);
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .qs-btn:hover { background: var(--moss); }
+
+    .qs-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .qs-tag {
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      color: var(--bark);
+      padding: 0.35rem 0.9rem;
+      border-radius: 2rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+    }
+
+    .qs-tag:hover {
+      background: var(--sand);
+      border-color: var(--mist);
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 6rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--bark);
+    }
+
+    .section-title em { font-style: italic; color: var(--moss); }
+
+    .section-link {
+      color: var(--bark);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .section-link:hover { opacity: 1; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feat-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .feat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26,22,18,0.1);
+    }
+
+    .feat-card:first-child {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      background: var(--bark);
+      color: var(--cream);
+    }
+
+    .feat-icon {
+      width: 3rem; height: 3rem;
+      border-radius: 0.75rem;
+      background: var(--cream);
+      display: grid;
+      place-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .feat-card:first-child .feat-icon {
+      background: rgba(245,240,232,0.15);
+    }
+
+    .feat-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--bark);
+      margin-bottom: 0.6rem;
+    }
+
+    .feat-card:first-child .feat-name { color: var(--cream); }
+
+    .feat-desc {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      opacity: 0.65;
+    }
+
+    .feat-card:first-child .feat-desc { opacity: 0.75; color: var(--cream); }
+
+    .feat-visual {
+      background: rgba(245,240,232,0.08);
+      border-radius: 1rem;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(245,240,232,0.12);
+    }
+
+    /* ── BUILDINGS STRIP ── */
+    .buildings {
+      background: var(--sand);
+      padding: 4.5rem 3rem;
+    }
+
+    .buildings-header {
+      max-width: 1200px;
+      margin: 0 auto 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .buildings-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--bark);
+    }
+
+    .buildings-scroll {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .building-card {
+      background: var(--white);
+      border: 1px solid rgba(200,180,160,0.5);
+      border-radius: 1rem;
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .building-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(26,22,18,0.1);
+    }
+
+    .building-img {
+      height: 110px;
+      background: var(--mist);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .building-info { padding: 1rem 1.1rem; }
+
+    .building-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      color: var(--bark);
+      margin-bottom: 0.25rem;
+    }
+
+    .building-type {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--moss);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bark);
+      color: var(--cream);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand span { color: var(--gold); font-style: italic; }
+
+    .footer-tagline {
+      font-size: 0.85rem;
+      opacity: 0.55;
+      line-height: 1.6;
+    }
+
+    .footer-col-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+    .footer-links a {
+      text-decoration: none;
+      color: var(--cream);
+      font-size: 0.85rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .footer-links a:hover { opacity: 1; }
+
+    .footer-bottom {
+      background: rgba(0,0,0,0.2);
+      padding: 1rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--cream);
+      opacity: 0.5;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeScale {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-4px); }
+    }
+
+    @keyframes dash {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .route-path {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      animation: dash 2.5s ease forwards 1.4s;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+      .hero-visual { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feat-card:first-child { grid-column: span 1; grid-template-columns: 1fr; }
+      .feat-visual { display: none; }
+      .buildings-scroll { grid-template-columns: repeat(2, 1fr); }
+      footer { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
-
 <body>
 
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Campus<span>Nav</span></a>
+    <ul class="nav-links">
+      <li><a href="map.html">Map</a></li>
+      <li><a href="building.html">Buildings</a></li>
+      <li><a href="#">Events</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="map.html" class="nav-cta">Open Map →</a></li>
+    </ul>
+  </nav>
 
-<h1>Campus Navigation System</h1>
-
-<input type="text" id="searchInput" placeholder="Search building...">
-<button onclick="searchBuilding()">Search</button>
-
-<br><br>
-
-<a href="map.html">Open Campus Map</a>
-
-<script src="js/search.js"></script>
-
-<header>
-    <h1>Campus Navigator</h1>
-    <p>Find your way around campus easily</p>
-</header>
-
-<nav>
-    <a href="#">Home</a>
-    <a href="#">Map</a>
-    <a href="#">Departments</a>
-    <a href="#">Facilities</a>
-    <a href="#">Contact</a>
-</nav>
-
-<section class="hero">
-    <h2>Search Campus Locations</h2>
-
-    <div class="search-box">
-        <input type="text" placeholder="Enter building name...">
-        <button>Search</button>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Campus Navigation System</div>
+      <h1 class="hero-title">
+        Find your way<br><em>anywhere</em><br>on campus.
+      </h1>
+      <p class="hero-desc">
+        Real-time indoor &amp; outdoor navigation, building directories, and turn-by-turn guidance.
+        <span>Never get lost between lectures again.</span>
+      </p>
+      <div class="hero-actions">
+        <a href="map.html" class="btn-primary">
+          Explore the Map
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="building.html" class="btn-secondary">Browse buildings</a>
+      </div>
     </div>
-</section>
 
-<div class="container">
-    <h2>Popular Locations</h2>
-
-    <div class="places">
-
-        <div class="card">
-            <h3>Library</h3>
-            <p>Study and research center.</p>
+    <div class="hero-visual">
+      <div class="map-card">
+        <div class="map-card-header">
+          <div class="map-dots">
+            <div class="map-dot"></div>
+            <div class="map-dot"></div>
+            <div class="map-dot"></div>
+          </div>
+          <div class="map-search-bar">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Search for a building or room...
+          </div>
         </div>
-
-        <div class="card">
-            <h3>Cafeteria</h3>
-            <p>Food and refreshments.</p>
+        <div class="map-body">
+          <!-- SVG Campus Map Illustration -->
+          <svg class="map-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ground / paths -->
+            <rect width="560" height="320" fill="#E8E2D8"/>
+            <!-- Main paths -->
+            <rect x="0" y="148" width="560" height="24" fill="#D8D0C0" rx="2"/>
+            <rect x="220" y="0" width="22" height="320" fill="#D8D0C0" rx="2"/>
+            <rect x="380" y="0" width="22" height="320" fill="#D8D0C0" rx="2"/>
+            <!-- Green areas -->
+            <ellipse cx="120" cy="80" rx="80" ry="55" fill="#B8C9A8" opacity="0.6"/>
+            <ellipse cx="480" cy="240" rx="65" ry="50" fill="#B8C9A8" opacity="0.5"/>
+            <!-- Buildings -->
+            <rect x="30" y="30" width="90" height="65" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
+            <text x="75" y="67" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">LIBRARY</text>
+            <rect x="250" y="20" width="110" height="75" rx="4" fill="#A8B8A0" stroke="#8A9A80" stroke-width="1.5"/>
+            <text x="305" y="57" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4A6040" font-weight="600">SCIENCE</text>
+            <text x="305" y="68" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4A6040" font-weight="600">HALL</text>
+            <rect x="410" y="30" width="100" height="80" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
+            <text x="460" y="70" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">ADMIN</text>
+            <rect x="30" y="195" width="80" height="70" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
+            <text x="70" y="232" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">GYM</text>
+            <rect x="250" y="195" width="100" height="75" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
+            <text x="300" y="232" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">STUDENT</text>
+            <text x="300" y="243" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">UNION</text>
+            <rect x="410" y="195" width="105" height="70" rx="4" fill="#A8B8A0" stroke="#8A9A80" stroke-width="1.5"/>
+            <text x="462" y="232" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4A6040" font-weight="600">ENG BLDG</text>
+            <!-- Animated route -->
+            <path class="route-path" d="M75 95 L75 148 L220 148 L220 108 L250 108" stroke="#C8992A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="6 4"/>
+            <!-- Origin pin -->
+            <circle cx="75" cy="95" r="6" fill="#C8992A"/>
+            <circle cx="75" cy="95" r="3" fill="white"/>
+            <!-- Destination pin -->
+            <g transform="translate(298, 90)">
+              <circle r="10" fill="#4A6741"/>
+              <path d="M0,-7 C-4,-7 -7,-4 -7,0 C-7,5 0,12 0,12 C0,12 7,5 7,0 C7,-4 4,-7 0,-7Z" fill="#4A6741"/>
+              <circle r="3.5" fill="white" cy="-1"/>
+            </g>
+          </svg>
+          <div class="map-eta">4 min walk</div>
+          <div class="map-info-card">
+            <div class="info-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="info-text">
+              <div class="info-name">Science Hall</div>
+              <div class="info-sub">Room 204 · 2nd Floor</div>
+            </div>
+          </div>
         </div>
-
-        <div class="card">
-            <h3>Computer Lab</h3>
-            <p>Programming and lab sessions.</p>
-        </div>
-
-        <div class="card">
-            <h3>Admin Block</h3>
-            <p>Administrative services.</p>
-        </div>
-
+      </div>
     </div>
-</div>
+  </section>
 
-<footer>
-    <p>© 2026 Campus Navigator | Hackathon Project</p>
-</footer>
+  <!-- QUICK SEARCH -->
+  <section class="quick-search">
+    <div class="qs-inner">
+      <div class="qs-label">Quick Search</div>
+      <div class="qs-input-wrap">
+        <input class="qs-input" type="text" placeholder="Search a building, room, or department…" id="searchInput" />
+        <button class="qs-btn" onclick="handleSearch()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Search
+        </button>
+      </div>
+      <div class="qs-tags">
+        <a href="building.html?q=library" class="qs-tag">📚 Library</a>
+        <a href="building.html?q=cafeteria" class="qs-tag">☕ Cafeteria</a>
+        <a href="building.html?q=gym" class="qs-tag">🏋️ Gym</a>
+        <a href="building.html?q=admin" class="qs-tag">🏛️ Admin Office</a>
+        <a href="building.html?q=parking" class="qs-tag">🅿️ Parking</a>
+        <a href="building.html?q=health" class="qs-tag">🏥 Health Center</a>
+      </div>
+    </div>
+  </section>
 
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="section-header">
+      <div>
+        <div class="section-eyebrow">Why CampusNav</div>
+        <h2 class="section-title">Everything you need<br>to <em>navigate</em> campus life.</h2>
+      </div>
+      <a href="map.html" class="section-link">View full map →</a>
+    </div>
 
+    <div class="features-grid">
+      <!-- Feature 1 - wide -->
+      <div class="feat-card">
+        <div>
+          <div class="feat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          </div>
+          <div class="feat-name">Turn-by-Turn Navigation</div>
+          <p class="feat-desc">Step-by-step directions from anywhere on campus to your destination. Works indoors and outdoors with accessible route options.</p>
+        </div>
+        <div class="feat-visual">
+          <svg width="120" height="80" viewBox="0 0 120 80">
+            <circle cx="20" cy="60" r="6" fill="rgba(245,240,232,0.3)" stroke="rgba(245,240,232,0.6)" stroke-width="2"/>
+            <path d="M20 54 L20 30 L70 30 L70 15 L100 15" stroke="rgba(245,240,232,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="4 3"/>
+            <circle cx="100" cy="15" r="6" fill="#C8992A"/>
+            <circle cx="100" cy="15" r="3" fill="white"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="feat-name">Instant Search</div>
+        <p class="feat-desc">Find any room, department, or facility instantly. Search by name, building code, or category.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="feat-name">Events & Hours</div>
+        <p class="feat-desc">Check building hours, upcoming events, and real-time availability for study spaces.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="feat-name">Accessibility Routes</div>
+        <p class="feat-desc">Dedicated accessible routes with elevator locations, ramps, and accessible entrances clearly marked.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILDINGS STRIP -->
+  <section class="buildings">
+    <div class="buildings-header">
+      <h2 class="buildings-title">Popular Buildings</h2>
+      <a href="building.html" class="section-link" style="color:var(--bark)">View all buildings →</a>
+    </div>
+    <div class="buildings-scroll">
+      <a href="building.html?id=library" class="building-card">
+        <div class="building-img">📚</div>
+        <div class="building-info">
+          <div class="building-name">Main Library</div>
+          <div class="building-type">Academic</div>
+        </div>
+      </a>
+      <a href="building.html?id=science" class="building-card">
+        <div class="building-img">🔬</div>
+        <div class="building-info">
+          <div class="building-name">Science Hall</div>
+          <div class="building-type">Academic</div>
+        </div>
+      </a>
+      <a href="building.html?id=student-union" class="building-card">
+        <div class="building-img">🏛️</div>
+        <div class="building-info">
+          <div class="building-name">Student Union</div>
+          <div class="building-type">Student Services</div>
+        </div>
+      </a>
+      <a href="building.html?id=gym" class="building-card">
+        <div class="building-img">🏋️</div>
+        <div class="building-info">
+          <div class="building-name">Recreation Center</div>
+          <div class="building-type">Athletics</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-brand">Campus<span>Nav</span></div>
+      <p class="footer-tagline">Your complete guide to navigating campus — indoors, outdoors, and everywhere in between.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigate</div>
+      <ul class="footer-links">
+        <li><a href="map.html">Interactive Map</a></li>
+        <li><a href="building.html">Buildings A–Z</a></li>
+        <li><a href="#">Parking Lots</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Campus</div>
+      <ul class="footer-links">
+        <li><a href="#">Events</a></li>
+        <li><a href="#">Directory</a></li>
+        <li><a href="#">Emergency Info</a></li>
+        <li><a href="#">Campus Tours</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <ul class="footer-links">
+        <li><a href="#">Report an Issue</a></li>
+        <li><a href="#">Feedback</a></li>
+        <li><a href="#">API Docs</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2025 CampusNav. University Navigation System.</span>
+    <span>Built for students, by students.</span>
+  </div>
+
+  <script>
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.trim();
+      if (query) {
+        window.location.href = `building.html?q=${encodeURIComponent(query)}`;
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSearch();
+    });
+
+    // Stagger feature cards on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feat-card, .building-card').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
+      observer.observe(el);
+    });
+  </script>
 </body>
 </html>
