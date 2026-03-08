@@ -3,21 +3,22 @@ let searchMarkers = [];
 
 function findBuilding(){
 
+// get search text
 let input = document
 .getElementById("search")
 .value
 .toLowerCase()
 .trim();
 
-let selected = document
-.getElementById("destination")
-.value
-.toLowerCase()
-.trim();
+// get dropdown selection (if exists)
+let dropdown = document.getElementById("destination");
 
-// use typed input OR dropdown
+let selected = dropdown ? dropdown.value.toLowerCase().trim() : "";
+
+// use typed input OR dropdown value
 let searchValue = input || selected;
 
+// search building
 let result = locations.find(
 b => b.name.toLowerCase().includes(searchValue)
 );
@@ -26,13 +27,13 @@ if(result){
 
 selectedLocation = result;
 
-// remove old markers
+// remove previous markers
 searchMarkers.forEach(marker => marker.setMap(null));
 searchMarkers = [];
 
 let location;
 
-// if building has multiple coordinates
+// building with multiple coordinates
 if(result.coords){
 
 location = result.coords[0];
@@ -54,7 +55,7 @@ searchMarkers.push(marker);
 
 }
 
-// if building has single coordinate
+// building with single coordinate
 else{
 
 location = {
@@ -75,12 +76,16 @@ searchMarkers.push(marker);
 
 }
 
+// call navigation
+if(typeof navigateTo === "function"){
 navigateTo(result);
-
 }
 
+}
 else{
+
 alert("Building not found");
+
 }
 
 }

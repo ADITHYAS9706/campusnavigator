@@ -4,12 +4,16 @@
 <head>
 <title>Campus Navigation</title>
 <link rel="stylesheet" href="css/map.css">
+
+
+
 </head>
 
 <body>
 
 <h2>Campus Navigation</h2>
 
+<!-- Building Search -->
 <div class="search-box">
 <input type="text" id="search" placeholder="Search your need">
 <select id="destination">
@@ -44,6 +48,48 @@
 <button id="nav" onclick="startNavigation()">Navigate</button>
 
 </div>
+
+
+<!-- Google Map -->
+<div id="map"></div>
+
+<br>
+
+<hr>
+
+<h2>Indoor Navigation</h2>
+
+<!-- Floor selector -->
+ <h3>Select Floor from old building</h3>
+<select id="floorSelect" onchange="changeFloor()">
+<option value="" hidden>Select Floor</option>
+<option value="ground">Ground Floor</option>
+<option value="first">First Floor</option>
+<option value="second">Second Floor</option>
+<option value="third">Third Floor</option>
+<option value="fourth">Fourth Floor</option>
+</select>
+<h3>New Building Floors</h3>
+<select id="floorSelectNew" onchange="changeFloorNew()">
+<option value="" hidden>Select Floor</option>
+<option value="ground">Ground Floor</option>
+<option value="first">First Floor</option>
+<option value="second">Second Floor</option>
+<option value="third">Third Floor</option>
+</select>
+
+<br><br>
+
+<div id="mapContainer">
+
+<img id="floorMap" src="assets/maps/ground-floor.png" width="700">
+
+</div>
+
+<div id="navigationInfo"></div>
+
+
+
 
 <div id="map"></div>
 

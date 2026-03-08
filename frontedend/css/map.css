@@ -4,22 +4,79 @@ text-align:center;
 background:#f5f5f5;
 }
 
+
+/* Google map container */
 #map{
+
+height:70vh;
+
 height:500px;
+
 width:100%;
 margin-top:10px;
 border-radius:10px;
 }
 
+
+/* Search box on top of map */
 .search-box{
 margin:15px;
 }
 
+
+
+/* Search input */
+.search-box input{
+
 input,select,button{
+
 padding:8px;
 margin:5px;
 }
+}
 
+/* Search button */
+.search-box button{
+padding:8px 15px;
+margin-left:5px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:4px;
+cursor:pointer;
+}
+
+
+/* Button hover effect */
+.search-box button:hover{
+background:#0056b3;
+}
+
+
+.flor-Container{
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:20px;
+}
+
+#floorMap{
+max-width:700px;
+width:100%;
+border:2px solid #ccc;
+border-radius:8px;
+}
+
+
+/* Canvas route overlay */
+#routeCanvas{
+position:absolute;
+top:0;
+left:0;
+width:700px;
+height:500px;
+pointer-events:none;
+}
 #searching{
    background-color: rgb(87, 86, 86);
 }
@@ -61,4 +118,5 @@ margin:5px;
 
 body{
     background: linear-gradient(135deg, #17c7c7, #000000);
+
 }

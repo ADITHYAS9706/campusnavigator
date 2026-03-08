@@ -1,17 +1,22 @@
 [
- {
- "name":"Library",
- "lat":12.9720,
- "lng":77.5950
- },
- {
- "name":"Computer Lab",
- "lat":12.9715,
- "lng":77.5945
- },
- {
- "name":"Canteen",
- "lat":12.9725,
- "lng":77.5960
- }
+  {
+    "name": "Main Block",
+    "lat": 13.9706,
+    "lng": 75.5665
+  },
+  {
+    "name": "Library",
+    "lat": 13.96184,
+    "lng": 75.50861
+  },
+  {
+    "name": "Canteen",
+    "lat": 13.9702,
+    "lng": 75.5661
+  },
+  {
+    "name": "Computer Science Department",
+    "lat": 13.9707,
+    "lng": 75.5663
+  }
 ]
