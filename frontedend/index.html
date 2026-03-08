@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CampusNav — Find Your Way</title>
+  <title>Buildings — CampusNav</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,6 +19,7 @@
       --sand: #E8D9C0;
       --mist: #D4CABA;
       --white: #FDFCF9;
+      --red: #B84040;
     }
 
     html { scroll-behavior: smooth; }
@@ -28,684 +29,685 @@
       color: var(--ink);
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
-      overflow-x: hidden;
+      min-height: 100vh;
     }
 
     /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: sticky;
+      top: 0;
       z-index: 100;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 1.25rem 3rem;
-      background: rgba(245, 240, 232, 0.85);
-      backdrop-filter: blur(12px);
+      padding: 1.1rem 3rem;
+      background: rgba(245, 240, 232, 0.9);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--mist);
     }
 
     .nav-logo {
       font-family: 'DM Serif Display', serif;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       color: var(--bark);
       text-decoration: none;
       letter-spacing: -0.02em;
     }
+    .nav-logo span { color: var(--moss); font-style: italic; }
 
-    .nav-logo span {
-      color: var(--moss);
-      font-style: italic;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
     .nav-links a {
       text-decoration: none;
       color: var(--ink);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      opacity: 0.7;
+      opacity: 0.6;
       transition: opacity 0.2s;
     }
-
-    .nav-links a:hover { opacity: 1; }
-
+    .nav-links a:hover, .nav-links a.active { opacity: 1; }
+    .nav-links a.active { color: var(--moss); }
     .nav-cta {
-      background: var(--bark);
+      background: var(--bark) !important;
       color: var(--cream) !important;
-      padding: 0.55rem 1.4rem;
+      padding: 0.5rem 1.3rem;
       border-radius: 2rem;
       opacity: 1 !important;
       transition: background 0.2s !important;
     }
-
     .nav-cta:hover { background: var(--moss) !important; }
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: 7rem 3rem 4rem;
-      gap: 4rem;
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--bark);
+      padding: 4rem 3rem 3rem;
       position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -10%; right: -5%;
-      width: 55%;
-      height: 110%;
-      background: radial-gradient(ellipse at 60% 40%, rgba(74,103,65,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse at 40% 70%, rgba(200,153,42,0.08) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    /* Decorative grid lines */
-    .hero::after {
+    .page-header::before {
       content: '';
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(61,43,31,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(61,43,31,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+        linear-gradient(rgba(245,240,232,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245,240,232,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
     }
 
-    .hero-text { position: relative; z-index: 1; }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--moss);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: slideUp 0.7s ease forwards 0.2s;
-    }
-
-    .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 2rem;
-      height: 1.5px;
-      background: var(--moss);
-    }
-
-    .hero-title {
+    .page-header::after {
+      content: 'BUILDINGS';
+      position: absolute;
+      right: 2rem;
+      bottom: -1.5rem;
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      color: var(--bark);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: slideUp 0.7s ease forwards 0.4s;
+      font-size: 9rem;
+      color: rgba(245,240,232,0.04);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
     }
 
-    .hero-title em {
-      font-style: italic;
-      color: var(--moss);
-    }
-
-    .hero-desc {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      color: var(--ink);
-      opacity: 0;
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      animation: slideUp 0.7s ease forwards 0.6s;
-    }
-
-    .hero-desc span { opacity: 0.6; }
-
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      opacity: 0;
-      animation: slideUp 0.7s ease forwards 0.8s;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: var(--bark);
-      color: var(--cream);
-      text-decoration: none;
-      padding: 0.9rem 2rem;
-      border-radius: 3rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      transition: background 0.25s, transform 0.2s;
-    }
-
-    .btn-primary:hover {
-      background: var(--moss);
-      transform: translateY(-2px);
-    }
-
-    .btn-primary svg { transition: transform 0.2s; }
-    .btn-primary:hover svg { transform: translateX(3px); }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--bark);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border-bottom: 1.5px solid var(--bark);
-      padding-bottom: 0.1rem;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .btn-secondary:hover { color: var(--moss); border-color: var(--moss); }
-
-    /* ── HERO VISUAL ── */
-    .hero-visual {
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
       position: relative;
       z-index: 1;
-      opacity: 0;
-      animation: fadeScale 0.9s ease forwards 0.5s;
     }
 
-    .map-card {
-      background: var(--white);
-      border: 1px solid var(--mist);
-      border-radius: 1.5rem;
-      overflow: hidden;
-      box-shadow:
-        0 4px 6px rgba(26,22,18,0.04),
-        0 20px 60px rgba(26,22,18,0.1),
-        0 0 0 1px rgba(26,22,18,0.04);
-    }
-
-    .map-card-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--sand);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: var(--white);
-    }
-
-    .map-dots { display: flex; gap: 0.4rem; }
-    .map-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-    }
-    .map-dot:nth-child(1) { background: #E87060; }
-    .map-dot:nth-child(2) { background: #E8C460; }
-    .map-dot:nth-child(3) { background: #60C860; }
-
-    .map-search-bar {
-      flex: 1;
-      background: var(--cream);
-      border: 1px solid var(--sand);
-      border-radius: 0.5rem;
-      padding: 0.4rem 0.8rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem;
-      color: var(--ink);
-      opacity: 0.6;
+    .breadcrumb {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .breadcrumb a { color: rgba(245,240,232,0.5); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: rgba(245,240,232,0.9); }
+    .breadcrumb-sep { color: rgba(245,240,232,0.25); }
+    .breadcrumb span { color: var(--gold); }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      color: var(--cream);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+    .page-title em { color: var(--gold); font-style: italic; }
+
+    .page-subtitle {
+      color: rgba(245,240,232,0.6);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 480px;
     }
 
-    /* Fake campus map SVG illustration */
-    .map-body {
-      width: 100%;
-      height: 320px;
-      background: #EDE8DF;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .map-svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Floating info card */
-    .map-info-card {
-      position: absolute;
-      bottom: 1.25rem;
-      left: 1.25rem;
+    /* ── SEARCH + FILTERS BAR ── */
+    .controls-bar {
       background: var(--white);
-      border: 1px solid var(--sand);
-      border-radius: 1rem;
-      padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--sand);
+      padding: 1.25rem 3rem;
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+    }
+
+    .controls-inner {
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
-      gap: 0.9rem;
-      box-shadow: 0 8px 24px rgba(26,22,18,0.12);
-      animation: pulse 3s ease-in-out infinite;
+      gap: 1.25rem;
+      flex-wrap: wrap;
     }
 
-    .info-icon {
-      width: 2.4rem; height: 2.4rem;
-      background: var(--moss);
+    .search-wrap {
+      flex: 1;
+      min-width: 240px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--cream);
+      border: 1.5px solid var(--mist);
       border-radius: 0.6rem;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
+      padding: 0.6rem 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--moss);
+      box-shadow: 0 0 0 3px rgba(74,103,65,0.1);
+    }
+    .search-wrap svg { opacity: 0.4; flex-shrink: 0; }
+    .search-wrap input {
+      border: none; outline: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      width: 100%;
+    }
+    .search-wrap input::placeholder { color: var(--mist); }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
     }
 
-    .info-text { line-height: 1.3; }
-    .info-name { font-size: 0.85rem; font-weight: 600; color: var(--bark); }
-    .info-sub { font-size: 0.72rem; color: var(--ink); opacity: 0.55; margin-top: 0.1rem; }
-
-    .map-eta {
-      position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      background: var(--gold);
-      color: var(--white);
+    .filter-tab {
+      padding: 0.45rem 1rem;
       border-radius: 2rem;
-      padding: 0.35rem 0.8rem;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 500;
       letter-spacing: 0.04em;
+      border: 1.5px solid var(--mist);
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .filter-tab:hover { border-color: var(--moss); color: var(--moss); }
+    .filter-tab.active {
+      background: var(--moss);
+      border-color: var(--moss);
+      color: var(--white);
     }
 
-    /* ── QUICK SEARCH ── */
-    .quick-search {
-      padding: 3rem;
-      border-top: 1px solid var(--sand);
-      border-bottom: 1px solid var(--sand);
-      background: var(--white);
+    .view-toggle {
+      display: flex;
+      border: 1.5px solid var(--mist);
+      border-radius: 0.5rem;
+      overflow: hidden;
     }
+    .view-btn {
+      padding: 0.45rem 0.7rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--ink);
+      opacity: 0.4;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    .view-btn.active { background: var(--bark); color: var(--cream); opacity: 1; }
 
-    .qs-inner {
-      max-width: 680px;
+    .results-count {
+      font-size: 0.78rem;
+      color: var(--ink);
+      opacity: 0.5;
+      white-space: nowrap;
+    }
+    .results-count strong { color: var(--bark); opacity: 1; font-weight: 600; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 1200px;
       margin: 0 auto;
-      text-align: center;
+      padding: 2.5rem 3rem 5rem;
     }
 
-    .qs-label {
-      font-size: 0.75rem;
-      font-weight: 600;
+    /* ── BUILDING DETAIL PANEL (when a building is selected) ── */
+    .detail-panel {
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1.25rem;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+      animation: slideDown 0.3s ease;
+    }
+    .detail-panel.open { display: grid; grid-template-columns: 1fr 380px; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .detail-main { padding: 2.5rem; border-right: 1px solid var(--sand); }
+
+    .detail-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      font-weight: 700;
       letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .detail-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: var(--bark);
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-code {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--moss);
       margin-bottom: 1.25rem;
     }
 
-    .qs-input-wrap {
-      display: flex;
-      border: 1.5px solid var(--mist);
-      border-radius: 3rem;
-      overflow: hidden;
-      background: var(--white);
-      box-shadow: 0 4px 20px rgba(26,22,18,0.07);
-      transition: box-shadow 0.2s, border-color 0.2s;
-    }
-
-    .qs-input-wrap:focus-within {
-      border-color: var(--moss);
-      box-shadow: 0 4px 24px rgba(74,103,65,0.15);
-    }
-
-    .qs-input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 1rem 1.5rem;
-      font-family: 'DM Sans', sans-serif;
+    .detail-desc {
       font-size: 0.95rem;
-      background: transparent;
+      line-height: 1.75;
       color: var(--ink);
+      opacity: 0.75;
+      margin-bottom: 2rem;
+      max-width: 520px;
     }
 
-    .qs-input::placeholder { color: var(--mist); }
-
-    .qs-btn {
-      margin: 0.35rem;
-      background: var(--bark);
-      color: var(--cream);
-      border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 2rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background 0.2s;
-    }
-
-    .qs-btn:hover { background: var(--moss); }
-
-    .qs-tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-top: 1.25rem;
-    }
-
-    .qs-tag {
-      background: var(--cream);
-      border: 1px solid var(--sand);
-      color: var(--bark);
-      padding: 0.35rem 0.9rem;
-      border-radius: 2rem;
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      text-decoration: none;
-    }
-
-    .qs-tag:hover {
-      background: var(--sand);
-      border-color: var(--mist);
-    }
-
-    /* ── FEATURES ── */
-    .features {
-      padding: 6rem 3rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 2rem;
-      margin-bottom: 3.5rem;
-    }
-
-    .section-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.75rem;
-    }
-
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      color: var(--bark);
-    }
-
-    .section-title em { font-style: italic; color: var(--moss); }
-
-    .section-link {
-      color: var(--bark);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      white-space: nowrap;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
-
-    .section-link:hover { opacity: 1; }
-
-    .features-grid {
+    .detail-meta {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .feat-card {
-      background: var(--white);
-      border: 1px solid var(--sand);
-      border-radius: 1.25rem;
-      padding: 2rem;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .feat-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(26,22,18,0.1);
-    }
-
-    .feat-card:first-child {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
-      background: var(--bark);
-      color: var(--cream);
-    }
-
-    .feat-icon {
-      width: 3rem; height: 3rem;
-      border-radius: 0.75rem;
-      background: var(--cream);
-      display: grid;
-      place-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .feat-card:first-child .feat-icon {
-      background: rgba(245,240,232,0.15);
-    }
-
-    .feat-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
-      color: var(--bark);
-      margin-bottom: 0.6rem;
-    }
-
-    .feat-card:first-child .feat-name { color: var(--cream); }
-
-    .feat-desc {
-      font-size: 0.9rem;
-      line-height: 1.65;
-      opacity: 0.65;
-    }
-
-    .feat-card:first-child .feat-desc { opacity: 0.75; color: var(--cream); }
-
-    .feat-visual {
-      background: rgba(245,240,232,0.08);
-      border-radius: 1rem;
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(245,240,232,0.12);
-    }
-
-    /* ── BUILDINGS STRIP ── */
-    .buildings {
-      background: var(--sand);
-      padding: 4.5rem 3rem;
-    }
-
-    .buildings-header {
-      max-width: 1200px;
-      margin: 0 auto 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .buildings-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.8rem;
-      color: var(--bark);
-    }
-
-    .buildings-scroll {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
+      margin-bottom: 2rem;
     }
 
-    .building-card {
-      background: var(--white);
-      border: 1px solid rgba(200,180,160,0.5);
-      border-radius: 1rem;
-      overflow: hidden;
-      text-decoration: none;
-      color: var(--ink);
-      transition: transform 0.2s, box-shadow 0.2s;
+    .meta-item {
+      background: var(--cream);
+      border-radius: 0.75rem;
+      padding: 1rem;
     }
-
-    .building-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(26,22,18,0.1);
-    }
-
-    .building-img {
-      height: 110px;
-      background: var(--mist);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-    }
-
-    .building-info { padding: 1rem 1.1rem; }
-
-    .building-name {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1rem;
-      color: var(--bark);
-      margin-bottom: 0.25rem;
-    }
-
-    .building-type {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+    .meta-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--moss);
+      margin-bottom: 0.3rem;
+    }
+    .meta-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--bark);
     }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--bark);
-      color: var(--cream);
-      padding: 3rem;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
+    .detail-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
-    .footer-brand {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.6rem;
-      color: var(--cream);
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-brand span { color: var(--gold); font-style: italic; }
-
-    .footer-tagline {
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--moss);
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
       font-size: 0.85rem;
-      opacity: 0.55;
-      line-height: 1.6;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
     }
+    .btn-nav:hover { background: var(--bark); transform: translateY(-1px); }
 
-    .footer-col-title {
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--bark);
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1.5px solid var(--mist);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--bark); }
+
+    .btn-close-detail {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink);
+      opacity: 0.4;
+      font-size: 1.2rem;
+      padding: 0.25rem;
+      line-height: 1;
+      float: right;
+      transition: opacity 0.2s;
+    }
+    .btn-close-detail:hover { opacity: 1; }
+
+    .detail-sidebar { padding: 2rem; background: var(--cream); }
+
+    .sidebar-section { margin-bottom: 2rem; }
+    .sidebar-title {
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
-    .footer-links a {
-      text-decoration: none;
-      color: var(--cream);
-      font-size: 0.85rem;
+    .hours-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.83rem;
+    }
+    .hours-day { color: var(--ink); opacity: 0.6; }
+    .hours-time { color: var(--bark); font-weight: 500; }
+    .hours-row.today .hours-day { color: var(--moss); font-weight: 600; opacity: 1; }
+    .hours-row.today .hours-time { color: var(--moss); }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+    .status-open { background: rgba(74,103,65,0.12); color: var(--moss); }
+    .status-closed { background: rgba(184,64,64,0.1); color: var(--red); }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .amenities-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .amenity-tag {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.65rem;
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 0.4rem;
+      color: var(--ink);
+      opacity: 0.75;
+    }
+
+    /* ── BUILDINGS GRID ── */
+    .buildings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .buildings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Grid Card */
+    .b-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.22s, box-shadow 0.22s, border-color 0.2s;
+      position: relative;
+    }
+    .b-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26,22,18,0.1);
+      border-color: var(--mist);
+    }
+    .b-card.selected {
+      border-color: var(--moss);
+      box-shadow: 0 0 0 2px rgba(74,103,65,0.2), 0 8px 30px rgba(26,22,18,0.1);
+    }
+
+    .b-card-banner {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .b-card-status {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2rem;
+    }
+    .b-card-status.open { background: rgba(74,103,65,0.85); color: white; }
+    .b-card-status.closed { background: rgba(26,22,18,0.6); color: rgba(255,255,255,0.8); }
+
+    .b-card-body { padding: 1.25rem 1.4rem 1.5rem; }
+
+    .b-card-type {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .b-card-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--bark);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .b-card-code {
+      font-size: 0.75rem;
+      color: var(--ink);
+      opacity: 0.45;
+      margin-bottom: 0.9rem;
+    }
+
+    .b-card-desc {
+      font-size: 0.83rem;
+      line-height: 1.6;
+      color: var(--ink);
       opacity: 0.6;
-      transition: opacity 0.2s;
+      margin-bottom: 1.1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
-    .footer-links a:hover { opacity: 1; }
 
-    .footer-bottom {
-      background: rgba(0,0,0,0.2);
-      padding: 1rem 3rem;
+    .b-card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--sand);
+    }
+
+    .b-card-floors {
       font-size: 0.75rem;
-      color: var(--cream);
+      color: var(--ink);
       opacity: 0.5;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
-    /* ── ANIMATIONS ── */
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .b-card-nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--moss);
+      background: rgba(74,103,65,0.08);
+      border: none;
+      border-radius: 2rem;
+      padding: 0.35rem 0.8rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .b-card-nav-btn:hover { background: rgba(74,103,65,0.18); }
+
+    /* List Card */
+    .b-list-card {
+      background: var(--white);
+      border: 1px solid var(--sand);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 3.5rem 1fr auto;
+      align-items: center;
+      gap: 1.25rem;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.2s;
+    }
+    .b-list-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 20px rgba(26,22,18,0.07);
+      border-color: var(--mist);
+    }
+    .b-list-card.selected { border-color: var(--moss); }
+
+    .b-list-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
     }
 
-    @keyframes fadeScale {
-      from { opacity: 0; transform: scale(0.95); }
-      to   { opacity: 1; transform: scale(1); }
+    .b-list-info {}
+    .b-list-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      color: var(--bark);
+      margin-bottom: 0.2rem;
+    }
+    .b-list-meta {
+      font-size: 0.78rem;
+      color: var(--ink);
+      opacity: 0.5;
+      display: flex;
+      gap: 0.8rem;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-4px); }
+    .b-list-right { text-align: right; flex-shrink: 0; }
+    .b-list-status {
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .b-list-status.open { color: var(--moss); }
+    .b-list-status.closed { color: var(--red); }
+    .b-list-floors {
+      font-size: 0.72rem;
+      color: var(--ink);
+      opacity: 0.4;
     }
 
-    @keyframes dash {
-      to { stroke-dashoffset: 0; }
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      display: none;
     }
+    .empty-state.visible { display: block; }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+    .empty-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--bark);
+      margin-bottom: 0.5rem;
+    }
+    .empty-desc { font-size: 0.9rem; color: var(--ink); opacity: 0.5; }
 
-    .route-path {
-      stroke-dasharray: 300;
-      stroke-dashoffset: 300;
-      animation: dash 2.5s ease forwards 1.4s;
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bark);
+      color: var(--cream);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+    }
+    .footer-brand span { color: var(--gold); font-style: italic; }
+    .footer-copy { font-size: 0.78rem; opacity: 0.4; }
+
+    /* ── CATEGORY COLORS ── */
+    .cat-academic    { color: var(--moss); }
+    .cat-admin       { color: var(--gold); }
+    .cat-student     { color: #6B8EC9; }
+    .cat-athletics   { color: #C96B6B; }
+    .cat-facilities  { color: #9B7EC9; }
+
+    .bg-academic    { background: rgba(74,103,65,0.08); }
+    .bg-admin       { background: rgba(200,153,42,0.1); }
+    .bg-student     { background: rgba(107,142,201,0.1); }
+    .bg-athletics   { background: rgba(201,107,107,0.1); }
+    .bg-facilities  { background: rgba(155,126,201,0.1); }
+
+    .banner-academic  { background: linear-gradient(135deg, #B8C9A8, #8FAA80); }
+    .banner-admin     { background: linear-gradient(135deg, #D4BF8A, #B8A060); }
+    .banner-student   { background: linear-gradient(135deg, #A8B8D4, #8098BC); }
+    .banner-athletics { background: linear-gradient(135deg, #D4A8A8, #BC8080); }
+    .banner-facilities{ background: linear-gradient(135deg, #C4B0D4, #A890BC); }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
-      .hero-visual { display: none; }
-      .features-grid { grid-template-columns: 1fr; }
-      .feat-card:first-child { grid-column: span 1; grid-template-columns: 1fr; }
-      .feat-visual { display: none; }
-      .buildings-scroll { grid-template-columns: repeat(2, 1fr); }
-      footer { grid-template-columns: 1fr 1fr; }
+      .page-header { padding: 3rem 1.5rem 2.5rem; }
+      .controls-bar { padding: 1rem 1.5rem; top: 57px; }
+      .main { padding: 2rem 1.5rem 4rem; }
+      .detail-panel.open { grid-template-columns: 1fr; }
+      .detail-sidebar { display: none; }
+      .detail-meta { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
     }
+
+    /* ── STAGGER ANIMATION ── */
+    .b-card, .b-list-card {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 0.4s ease,
+        transform 0.4s ease,
+        box-shadow 0.22s,
+        border-color 0.2s;
+    }
+    .b-card.visible, .b-list-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .b-card:hover { transform: translateY(-4px) !important; }
+    .b-list-card:hover { transform: translateX(4px) !important; }
+    .b-card.selected { transform: translateY(0) !important; }
   </style>
 </head>
 <body>
@@ -715,286 +717,551 @@
     <a href="index.html" class="nav-logo">Campus<span>Nav</span></a>
     <ul class="nav-links">
       <li><a href="map.html">Map</a></li>
-      <li><a href="building.html">Buildings</a></li>
+      <li><a href="building.html" class="active">Buildings</a></li>
       <li><a href="#">Events</a></li>
       <li><a href="#">About</a></li>
       <li><a href="map.html" class="nav-cta">Open Map →</a></li>
     </ul>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-text">
-      <div class="hero-eyebrow">Campus Navigation System</div>
-      <h1 class="hero-title">
-        Find your way<br><em>anywhere</em><br>on campus.
-      </h1>
-      <p class="hero-desc">
-        Real-time indoor &amp; outdoor navigation, building directories, and turn-by-turn guidance.
-        <span>Never get lost between lectures again.</span>
-      </p>
-      <div class="hero-actions">
-        <a href="map.html" class="btn-primary">
-          Explore the Map
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="building.html" class="btn-secondary">Browse buildings</a>
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Buildings</span>
       </div>
+      <h1 class="page-title">Campus <em>Buildings</em></h1>
+      <p class="page-subtitle">Explore all facilities, departments, and spaces across campus. Click any building for hours, amenities, and directions.</p>
     </div>
+  </header>
 
-    <div class="hero-visual">
-      <div class="map-card">
-        <div class="map-card-header">
-          <div class="map-dots">
-            <div class="map-dot"></div>
-            <div class="map-dot"></div>
-            <div class="map-dot"></div>
-          </div>
-          <div class="map-search-bar">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Search for a building or room...
-          </div>
-        </div>
-        <div class="map-body">
-          <!-- SVG Campus Map Illustration -->
-          <svg class="map-svg" viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg">
-            <!-- Ground / paths -->
-            <rect width="560" height="320" fill="#E8E2D8"/>
-            <!-- Main paths -->
-            <rect x="0" y="148" width="560" height="24" fill="#D8D0C0" rx="2"/>
-            <rect x="220" y="0" width="22" height="320" fill="#D8D0C0" rx="2"/>
-            <rect x="380" y="0" width="22" height="320" fill="#D8D0C0" rx="2"/>
-            <!-- Green areas -->
-            <ellipse cx="120" cy="80" rx="80" ry="55" fill="#B8C9A8" opacity="0.6"/>
-            <ellipse cx="480" cy="240" rx="65" ry="50" fill="#B8C9A8" opacity="0.5"/>
-            <!-- Buildings -->
-            <rect x="30" y="30" width="90" height="65" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
-            <text x="75" y="67" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">LIBRARY</text>
-            <rect x="250" y="20" width="110" height="75" rx="4" fill="#A8B8A0" stroke="#8A9A80" stroke-width="1.5"/>
-            <text x="305" y="57" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4A6040" font-weight="600">SCIENCE</text>
-            <text x="305" y="68" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4A6040" font-weight="600">HALL</text>
-            <rect x="410" y="30" width="100" height="80" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
-            <text x="460" y="70" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">ADMIN</text>
-            <rect x="30" y="195" width="80" height="70" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
-            <text x="70" y="232" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">GYM</text>
-            <rect x="250" y="195" width="100" height="75" rx="4" fill="#C4B8A8" stroke="#A89880" stroke-width="1.5"/>
-            <text x="300" y="232" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">STUDENT</text>
-            <text x="300" y="243" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6B5A48" font-weight="600">UNION</text>
-            <rect x="410" y="195" width="105" height="70" rx="4" fill="#A8B8A0" stroke="#8A9A80" stroke-width="1.5"/>
-            <text x="462" y="232" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4A6040" font-weight="600">ENG BLDG</text>
-            <!-- Animated route -->
-            <path class="route-path" d="M75 95 L75 148 L220 148 L220 108 L250 108" stroke="#C8992A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="6 4"/>
-            <!-- Origin pin -->
-            <circle cx="75" cy="95" r="6" fill="#C8992A"/>
-            <circle cx="75" cy="95" r="3" fill="white"/>
-            <!-- Destination pin -->
-            <g transform="translate(298, 90)">
-              <circle r="10" fill="#4A6741"/>
-              <path d="M0,-7 C-4,-7 -7,-4 -7,0 C-7,5 0,12 0,12 C0,12 7,5 7,0 C7,-4 4,-7 0,-7Z" fill="#4A6741"/>
-              <circle r="3.5" fill="white" cy="-1"/>
-            </g>
-          </svg>
-          <div class="map-eta">4 min walk</div>
-          <div class="map-info-card">
-            <div class="info-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <div class="info-text">
-              <div class="info-name">Science Hall</div>
-              <div class="info-sub">Room 204 · 2nd Floor</div>
-            </div>
-          </div>
-        </div>
+  <!-- CONTROLS BAR -->
+  <div class="controls-bar">
+    <div class="controls-inner">
+      <div class="search-wrap">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search buildings, rooms, departments…" />
       </div>
-    </div>
-  </section>
-
-  <!-- QUICK SEARCH -->
-  <section class="quick-search">
-    <div class="qs-inner">
-      <div class="qs-label">Quick Search</div>
-      <div class="qs-input-wrap">
-        <input class="qs-input" type="text" placeholder="Search a building, room, or department…" id="searchInput" />
-        <button class="qs-btn" onclick="handleSearch()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          Search
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">All</button>
+        <button class="filter-tab" data-filter="academic">Academic</button>
+        <button class="filter-tab" data-filter="admin">Admin</button>
+        <button class="filter-tab" data-filter="student">Student Life</button>
+        <button class="filter-tab" data-filter="athletics">Athletics</button>
+        <button class="filter-tab" data-filter="facilities">Facilities</button>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" title="Grid view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </button>
+        <button class="view-btn" id="listViewBtn" title="List view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         </button>
       </div>
-      <div class="qs-tags">
-        <a href="building.html?q=library" class="qs-tag">📚 Library</a>
-        <a href="building.html?q=cafeteria" class="qs-tag">☕ Cafeteria</a>
-        <a href="building.html?q=gym" class="qs-tag">🏋️ Gym</a>
-        <a href="building.html?q=admin" class="qs-tag">🏛️ Admin Office</a>
-        <a href="building.html?q=parking" class="qs-tag">🅿️ Parking</a>
-        <a href="building.html?q=health" class="qs-tag">🏥 Health Center</a>
-      </div>
+      <div class="results-count" id="resultsCount"><strong>16</strong> buildings</div>
     </div>
-  </section>
+  </div>
 
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="section-header">
-      <div>
-        <div class="section-eyebrow">Why CampusNav</div>
-        <h2 class="section-title">Everything you need<br>to <em>navigate</em> campus life.</h2>
-      </div>
-      <a href="map.html" class="section-link">View full map →</a>
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DETAIL PANEL -->
+    <div class="detail-panel" id="detailPanel">
+      <div class="detail-main" id="detailMain"></div>
+      <div class="detail-sidebar" id="detailSidebar"></div>
     </div>
 
-    <div class="features-grid">
-      <!-- Feature 1 - wide -->
-      <div class="feat-card">
-        <div>
-          <div class="feat-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-          </div>
-          <div class="feat-name">Turn-by-Turn Navigation</div>
-          <p class="feat-desc">Step-by-step directions from anywhere on campus to your destination. Works indoors and outdoors with accessible route options.</p>
-        </div>
-        <div class="feat-visual">
-          <svg width="120" height="80" viewBox="0 0 120 80">
-            <circle cx="20" cy="60" r="6" fill="rgba(245,240,232,0.3)" stroke="rgba(245,240,232,0.6)" stroke-width="2"/>
-            <path d="M20 54 L20 30 L70 30 L70 15 L100 15" stroke="rgba(245,240,232,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="4 3"/>
-            <circle cx="100" cy="15" r="6" fill="#C8992A"/>
-            <circle cx="100" cy="15" r="3" fill="white"/>
-          </svg>
-        </div>
-      </div>
+    <!-- GRID VIEW -->
+    <div class="buildings-grid" id="gridView"></div>
 
-      <!-- Feature 2 -->
-      <div class="feat-card">
-        <div class="feat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </div>
-        <div class="feat-name">Instant Search</div>
-        <p class="feat-desc">Find any room, department, or facility instantly. Search by name, building code, or category.</p>
-      </div>
+    <!-- LIST VIEW -->
+    <div class="buildings-list" id="listView" style="display:none;"></div>
 
-      <!-- Feature 3 -->
-      <div class="feat-card">
-        <div class="feat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <div class="feat-name">Events & Hours</div>
-        <p class="feat-desc">Check building hours, upcoming events, and real-time availability for study spaces.</p>
-      </div>
-
-      <!-- Feature 4 -->
-      <div class="feat-card">
-        <div class="feat-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A6741" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div class="feat-name">Accessibility Routes</div>
-        <p class="feat-desc">Dedicated accessible routes with elevator locations, ramps, and accessible entrances clearly marked.</p>
-      </div>
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">No buildings found</div>
+      <div class="empty-desc">Try a different search term or clear your filters.</div>
     </div>
-  </section>
 
-  <!-- BUILDINGS STRIP -->
-  <section class="buildings">
-    <div class="buildings-header">
-      <h2 class="buildings-title">Popular Buildings</h2>
-      <a href="building.html" class="section-link" style="color:var(--bark)">View all buildings →</a>
-    </div>
-    <div class="buildings-scroll">
-      <a href="building.html?id=library" class="building-card">
-        <div class="building-img">📚</div>
-        <div class="building-info">
-          <div class="building-name">Main Library</div>
-          <div class="building-type">Academic</div>
-        </div>
-      </a>
-      <a href="building.html?id=science" class="building-card">
-        <div class="building-img">🔬</div>
-        <div class="building-info">
-          <div class="building-name">Science Hall</div>
-          <div class="building-type">Academic</div>
-        </div>
-      </a>
-      <a href="building.html?id=student-union" class="building-card">
-        <div class="building-img">🏛️</div>
-        <div class="building-info">
-          <div class="building-name">Student Union</div>
-          <div class="building-type">Student Services</div>
-        </div>
-      </a>
-      <a href="building.html?id=gym" class="building-card">
-        <div class="building-img">🏋️</div>
-        <div class="building-info">
-          <div class="building-name">Recreation Center</div>
-          <div class="building-type">Athletics</div>
-        </div>
-      </a>
-    </div>
-  </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
-    <div>
-      <div class="footer-brand">Campus<span>Nav</span></div>
-      <p class="footer-tagline">Your complete guide to navigating campus — indoors, outdoors, and everywhere in between.</p>
-    </div>
-    <div>
-      <div class="footer-col-title">Navigate</div>
-      <ul class="footer-links">
-        <li><a href="map.html">Interactive Map</a></li>
-        <li><a href="building.html">Buildings A–Z</a></li>
-        <li><a href="#">Parking Lots</a></li>
-        <li><a href="#">Accessibility</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Campus</div>
-      <ul class="footer-links">
-        <li><a href="#">Events</a></li>
-        <li><a href="#">Directory</a></li>
-        <li><a href="#">Emergency Info</a></li>
-        <li><a href="#">Campus Tours</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Support</div>
-      <ul class="footer-links">
-        <li><a href="#">Report an Issue</a></li>
-        <li><a href="#">Feedback</a></li>
-        <li><a href="#">API Docs</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
+    <div class="footer-brand">Campus<span>Nav</span></div>
+    <div class="footer-copy">© 2025 CampusNav · University Navigation System</div>
   </footer>
-  <div class="footer-bottom">
-    <span>© 2025 CampusNav. University Navigation System.</span>
-    <span>Built for students, by students.</span>
-  </div>
 
   <script>
-    function handleSearch() {
-      const query = document.getElementById('searchInput').value.trim();
-      if (query) {
-        window.location.href = `building.html?q=${encodeURIComponent(query)}`;
-      }
+    // ── DATA ──
+    const buildings = [
+      {
+        id: "library",
+        name: "Main Library",
+        code: "LIB-01",
+        category: "academic",
+        emoji: "📚",
+        floors: 5,
+        isOpen: true,
+        description: "The central academic library housing over 2 million volumes, digital archives, group study rooms, and research assistance desks.",
+        amenities: ["Wi-Fi", "Printing", "Study Rooms", "Café", "Accessible", "24hr Access"],
+        hours: { Mon:"7:00 AM – 11:00 PM", Tue:"7:00 AM – 11:00 PM", Wed:"7:00 AM – 11:00 PM", Thu:"7:00 AM – 11:00 PM", Fri:"7:00 AM – 9:00 PM", Sat:"9:00 AM – 8:00 PM", Sun:"10:00 AM – 10:00 PM" },
+        phone: "+1 (555) 201-4400",
+        location: "North Quad, Central Campus",
+      },
+      {
+        id: "science",
+        name: "Science Hall",
+        code: "SCI-02",
+        category: "academic",
+        emoji: "🔬",
+        floors: 6,
+        isOpen: true,
+        description: "State-of-the-art research labs for Biology, Chemistry, Physics, and Environmental Sciences. Home to the Advanced Microscopy Suite.",
+        amenities: ["Labs", "Clean Rooms", "Lecture Halls", "Accessible", "Lockers"],
+        hours: { Mon:"7:30 AM – 10:00 PM", Tue:"7:30 AM – 10:00 PM", Wed:"7:30 AM – 10:00 PM", Thu:"7:30 AM – 10:00 PM", Fri:"7:30 AM – 6:00 PM", Sat:"9:00 AM – 5:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-3300",
+        location: "East Academic Zone",
+      },
+      {
+        id: "eng",
+        name: "Engineering Building",
+        code: "ENG-03",
+        category: "academic",
+        emoji: "⚙️",
+        floors: 7,
+        isOpen: true,
+        description: "Workshops, fabrication labs, design studios, and lecture halls for all engineering disciplines. Features a rooftop observatory.",
+        amenities: ["Fab Lab", "3D Printing", "Workshop", "Project Rooms", "Accessible"],
+        hours: { Mon:"8:00 AM – 9:00 PM", Tue:"8:00 AM – 9:00 PM", Wed:"8:00 AM – 9:00 PM", Thu:"8:00 AM – 9:00 PM", Fri:"8:00 AM – 6:00 PM", Sat:"10:00 AM – 4:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-5500",
+        location: "West Campus, Engineering Row",
+      },
+      {
+        id: "arts",
+        name: "Arts & Humanities",
+        code: "ART-04",
+        category: "academic",
+        emoji: "🎨",
+        floors: 4,
+        isOpen: false,
+        description: "Creative studios, performance spaces, galleries, and seminar rooms for Arts, Literature, History, and Philosophy departments.",
+        amenities: ["Gallery", "Studios", "Seminar Rooms", "Piano Rooms", "Accessible"],
+        hours: { Mon:"9:00 AM – 8:00 PM", Tue:"9:00 AM – 8:00 PM", Wed:"9:00 AM – 8:00 PM", Thu:"9:00 AM – 8:00 PM", Fri:"9:00 AM – 5:00 PM", Sat:"10:00 AM – 3:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-6600",
+        location: "South Quad",
+      },
+      {
+        id: "admin",
+        name: "Administration Office",
+        code: "ADM-05",
+        category: "admin",
+        emoji: "🏛️",
+        floors: 3,
+        isOpen: true,
+        description: "Central hub for registrar, financial aid, student records, and university administration. The President's Office is on the top floor.",
+        amenities: ["Registrar", "Financial Aid", "Records", "Notary", "Accessible"],
+        hours: { Mon:"8:30 AM – 5:00 PM", Tue:"8:30 AM – 5:00 PM", Wed:"8:30 AM – 5:00 PM", Thu:"8:30 AM – 5:00 PM", Fri:"8:30 AM – 4:30 PM", Sat:"Closed", Sun:"Closed" },
+        phone: "+1 (555) 201-1000",
+        location: "Central Campus, Main Entrance",
+      },
+      {
+        id: "finance",
+        name: "Finance & Bursar",
+        code: "FIN-06",
+        category: "admin",
+        emoji: "💳",
+        floors: 2,
+        isOpen: true,
+        description: "Handles tuition payments, student billing, scholarship disbursement, and financial planning consultations.",
+        amenities: ["ATM", "Payment Kiosk", "Consultation Rooms", "Accessible"],
+        hours: { Mon:"9:00 AM – 4:30 PM", Tue:"9:00 AM – 4:30 PM", Wed:"9:00 AM – 4:30 PM", Thu:"9:00 AM – 4:30 PM", Fri:"9:00 AM – 3:30 PM", Sat:"Closed", Sun:"Closed" },
+        phone: "+1 (555) 201-2200",
+        location: "Admin Complex, Building B",
+      },
+      {
+        id: "student-union",
+        name: "Student Union",
+        code: "STU-07",
+        category: "student",
+        emoji: "🏠",
+        floors: 3,
+        isOpen: true,
+        description: "The social heart of campus. Home to dining, student clubs, the bookstore, lounges, and event spaces hosting hundreds of activities each year.",
+        amenities: ["Dining Hall", "Bookstore", "Lounge", "Game Room", "Event Space", "Accessible"],
+        hours: { Mon:"7:00 AM – 11:00 PM", Tue:"7:00 AM – 11:00 PM", Wed:"7:00 AM – 11:00 PM", Thu:"7:00 AM – 11:00 PM", Fri:"7:00 AM – 12:00 AM", Sat:"8:00 AM – 12:00 AM", Sun:"9:00 AM – 10:00 PM" },
+        phone: "+1 (555) 201-7700",
+        location: "Central Campus, South End",
+      },
+      {
+        id: "health",
+        name: "Health Center",
+        code: "HLT-08",
+        category: "student",
+        emoji: "🏥",
+        floors: 2,
+        isOpen: true,
+        description: "Full-service student health clinic offering primary care, mental health counseling, pharmacy services, and wellness programs.",
+        amenities: ["Clinic", "Pharmacy", "Counseling", "Waiting Room", "Accessible"],
+        hours: { Mon:"8:00 AM – 6:00 PM", Tue:"8:00 AM – 6:00 PM", Wed:"8:00 AM – 6:00 PM", Thu:"8:00 AM – 6:00 PM", Fri:"8:00 AM – 5:00 PM", Sat:"10:00 AM – 2:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-8800",
+        location: "West Campus",
+      },
+      {
+        id: "housing",
+        name: "Housing Office",
+        code: "HOU-09",
+        category: "student",
+        emoji: "🏘️",
+        floors: 2,
+        isOpen: false,
+        description: "Manages on-campus residential assignments, maintenance requests, and housing contracts for all university accommodations.",
+        amenities: ["Front Desk", "Mail Room", "Accessible"],
+        hours: { Mon:"9:00 AM – 5:00 PM", Tue:"9:00 AM – 5:00 PM", Wed:"9:00 AM – 5:00 PM", Thu:"9:00 AM – 5:00 PM", Fri:"9:00 AM – 4:00 PM", Sat:"Closed", Sun:"Closed" },
+        phone: "+1 (555) 201-9900",
+        location: "Residential Zone, East",
+      },
+      {
+        id: "gym",
+        name: "Recreation Center",
+        code: "REC-10",
+        category: "athletics",
+        emoji: "🏋️",
+        floors: 4,
+        isOpen: true,
+        description: "World-class fitness facility with Olympic pool, climbing wall, weight rooms, cardio decks, court sports, and intramural leagues.",
+        amenities: ["Pool", "Climbing Wall", "Weight Room", "Courts", "Lockers", "Sauna"],
+        hours: { Mon:"6:00 AM – 11:00 PM", Tue:"6:00 AM – 11:00 PM", Wed:"6:00 AM – 11:00 PM", Thu:"6:00 AM – 11:00 PM", Fri:"6:00 AM – 10:00 PM", Sat:"7:00 AM – 9:00 PM", Sun:"8:00 AM – 8:00 PM" },
+        phone: "+1 (555) 201-1010",
+        location: "Athletics Zone, North Campus",
+      },
+      {
+        id: "stadium",
+        name: "Athletics Stadium",
+        code: "ATH-11",
+        category: "athletics",
+        emoji: "🏟️",
+        floors: 3,
+        isOpen: false,
+        description: "15,000-seat multi-use stadium hosting football, track & field, soccer, and major campus events. The pride of our athletics program.",
+        amenities: ["Seating", "Concessions", "Press Box", "Accessible", "First Aid"],
+        hours: { Mon:"Closed", Tue:"Closed", Wed:"Closed", Thu:"Closed", Fri:"Event days only", Sat:"Event days only", Sun:"Event days only" },
+        phone: "+1 (555) 201-1111",
+        location: "Far North Campus",
+      },
+      {
+        id: "aquatics",
+        name: "Aquatics Center",
+        code: "AQU-12",
+        category: "athletics",
+        emoji: "🏊",
+        floors: 2,
+        isOpen: true,
+        description: "Olympic 50m competition pool and warm-up pool. Home to the university swim team, water polo, and open recreational lap swimming.",
+        amenities: ["50m Pool", "Warm-up Pool", "Lockers", "Spectator Seating", "Accessible"],
+        hours: { Mon:"6:00 AM – 9:00 PM", Tue:"6:00 AM – 9:00 PM", Wed:"6:00 AM – 9:00 PM", Thu:"6:00 AM – 9:00 PM", Fri:"6:00 AM – 8:00 PM", Sat:"8:00 AM – 6:00 PM", Sun:"9:00 AM – 5:00 PM" },
+        phone: "+1 (555) 201-1212",
+        location: "Athletics Zone, West",
+      },
+      {
+        id: "maintenance",
+        name: "Facilities & Operations",
+        code: "FAC-13",
+        category: "facilities",
+        emoji: "🔧",
+        floors: 1,
+        isOpen: true,
+        description: "Manages campus maintenance, utilities, groundskeeping, and custodial services. Report maintenance issues at the front desk.",
+        amenities: ["Service Desk", "Parts Store", "Loading Dock"],
+        hours: { Mon:"7:00 AM – 5:00 PM", Tue:"7:00 AM – 5:00 PM", Wed:"7:00 AM – 5:00 PM", Thu:"7:00 AM – 5:00 PM", Fri:"7:00 AM – 4:00 PM", Sat:"On-call only", Sun:"On-call only" },
+        phone: "+1 (555) 201-1313",
+        location: "Service Road, West Campus",
+      },
+      {
+        id: "it",
+        name: "IT & Computing Center",
+        code: "ITC-14",
+        category: "facilities",
+        emoji: "💻",
+        floors: 3,
+        isOpen: true,
+        description: "Provides IT support, computer labs, software licenses, network services, and technology consultation for all students and staff.",
+        amenities: ["Computer Labs", "Help Desk", "Printing", "Equipment Loans", "Accessible"],
+        hours: { Mon:"8:00 AM – 8:00 PM", Tue:"8:00 AM – 8:00 PM", Wed:"8:00 AM – 8:00 PM", Thu:"8:00 AM – 8:00 PM", Fri:"8:00 AM – 6:00 PM", Sat:"10:00 AM – 4:00 PM", Sun:"Closed" },
+        phone: "+1 (555) 201-1414",
+        location: "Central Campus, Tech Row",
+      },
+      {
+        id: "security",
+        name: "Campus Security",
+        code: "SEC-15",
+        category: "facilities",
+        emoji: "🛡️",
+        floors: 1,
+        isOpen: true,
+        description: "24/7 campus safety and security services, including emergency response, lost & found, parking enforcement, and safety escorts.",
+        amenities: ["24/7 Service", "Lost & Found", "Parking Office", "Safety Escort"],
+        hours: { Mon:"24 hours", Tue:"24 hours", Wed:"24 hours", Thu:"24 hours", Fri:"24 hours", Sat:"24 hours", Sun:"24 hours" },
+        phone: "+1 (555) 201-9111",
+        location: "Main Gate, Campus Entrance",
+      },
+      {
+        id: "chapel",
+        name: "Memorial Chapel",
+        code: "CHP-16",
+        category: "student",
+        emoji: "⛪",
+        floors: 2,
+        isOpen: true,
+        description: "A serene, non-denominational space for reflection, meditation, religious services, and intimate gatherings. Open to all faiths.",
+        amenities: ["Quiet Space", "Meditation Room", "Event Bookings", "Accessible"],
+        hours: { Mon:"8:00 AM – 9:00 PM", Tue:"8:00 AM – 9:00 PM", Wed:"8:00 AM – 9:00 PM", Thu:"8:00 AM – 9:00 PM", Fri:"8:00 AM – 9:00 PM", Sat:"9:00 AM – 9:00 PM", Sun:"9:00 AM – 9:00 PM" },
+        phone: "+1 (555) 201-1616",
+        location: "South Garden, Central Campus",
+      },
+    ];
+
+    // ── STATE ──
+    let currentFilter = 'all';
+    let currentView = 'grid';
+    let currentSearch = '';
+    let selectedBuilding = null;
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const todayKey = days[new Date().getDay()];
+
+    // ── FILTER + RENDER ──
+    function getFiltered() {
+      return buildings.filter(b => {
+        const matchCat = currentFilter === 'all' || b.category === currentFilter;
+        const q = currentSearch.toLowerCase();
+        const matchSearch = !q ||
+          b.name.toLowerCase().includes(q) ||
+          b.code.toLowerCase().includes(q) ||
+          b.category.toLowerCase().includes(q) ||
+          b.description.toLowerCase().includes(q) ||
+          b.location.toLowerCase().includes(q);
+        return matchCat && matchSearch;
+      });
     }
 
-    document.getElementById('searchInput').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') handleSearch();
-    });
-
-    // Stagger feature cards on scroll
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
+    function renderAll() {
+      const filtered = getFiltered();
+      document.getElementById('resultsCount').innerHTML = `<strong>${filtered.length}</strong> building${filtered.length !== 1 ? 's' : ''}`;
+      renderGrid(filtered);
+      renderList(filtered);
+      document.getElementById('emptyState').classList.toggle('visible', filtered.length === 0);
+      if (selectedBuilding && !filtered.find(b => b.id === selectedBuilding.id)) {
+        closeDetail();
+      }
+      // Stagger in
+      requestAnimationFrame(() => {
+        const cards = document.querySelectorAll('.b-card, .b-list-card');
+        cards.forEach((c, i) => {
+          c.style.transitionDelay = `${i * 0.04}s`;
+          requestAnimationFrame(() => c.classList.add('visible'));
+        });
       });
-    }, { threshold: 0.1 });
+    }
 
-    document.querySelectorAll('.feat-card, .building-card').forEach((el, i) => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = `opacity 0.5s ease ${i * 0.1}s, transform 0.5s ease ${i * 0.1}s`;
-      observer.observe(el);
+    function catClass(cat) {
+      const m = { academic:'academic', admin:'admin', student:'student', athletics:'athletics', facilities:'facilities' };
+      return m[cat] || 'academic';
+    }
+
+    function renderGrid(filtered) {
+      const grid = document.getElementById('gridView');
+      grid.innerHTML = filtered.map(b => `
+        <div class="b-card ${selectedBuilding?.id === b.id ? 'selected' : ''}" data-id="${b.id}" onclick="selectBuilding('${b.id}')">
+          <div class="b-card-banner banner-${catClass(b.category)}">
+            <span>${b.emoji}</span>
+            <span class="b-card-status ${b.isOpen ? 'open' : 'closed'}">${b.isOpen ? 'Open' : 'Closed'}</span>
+          </div>
+          <div class="b-card-body">
+            <div class="b-card-type cat-${catClass(b.category)}">${b.category}</div>
+            <div class="b-card-name">${b.name}</div>
+            <div class="b-card-code">${b.code}</div>
+            <p class="b-card-desc">${b.description}</p>
+            <div class="b-card-footer">
+              <div class="b-card-floors">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+                ${b.floors} floor${b.floors !== 1 ? 's' : ''}
+              </div>
+              <button class="b-card-nav-btn" onclick="event.stopPropagation(); goToMap('${b.id}')">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                Navigate
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderList(filtered) {
+      const list = document.getElementById('listView');
+      list.innerHTML = filtered.map(b => `
+        <div class="b-list-card ${selectedBuilding?.id === b.id ? 'selected' : ''}" data-id="${b.id}" onclick="selectBuilding('${b.id}')">
+          <div class="b-list-icon bg-${catClass(b.category)}">${b.emoji}</div>
+          <div class="b-list-info">
+            <div class="b-list-name">${b.name}</div>
+            <div class="b-list-meta">
+              <span>${b.code}</span>
+              <span>${b.location}</span>
+              <span>${b.floors} floors</span>
+            </div>
+          </div>
+          <div class="b-list-right">
+            <span class="b-list-status ${b.isOpen ? 'open' : 'closed'}">${b.isOpen ? '● Open now' : '● Closed'}</span>
+            <div class="b-list-floors">${b.category}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── DETAIL PANEL ──
+    function selectBuilding(id) {
+      const b = buildings.find(x => x.id === id);
+      if (!b) return;
+      selectedBuilding = b;
+      document.querySelectorAll('.b-card, .b-list-card').forEach(el => {
+        el.classList.toggle('selected', el.dataset.id === id);
+      });
+      renderDetail(b);
+      document.getElementById('detailPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function renderDetail(b) {
+      const panel = document.getElementById('detailPanel');
+      panel.classList.add('open');
+
+      document.getElementById('detailMain').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
+          <span class="detail-badge bg-${catClass(b.category)} cat-${catClass(b.category)}">${b.emoji} ${b.category}</span>
+          <button class="btn-close-detail" onclick="closeDetail()" title="Close">✕</button>
+        </div>
+        <h2 class="detail-title">${b.name}</h2>
+        <div class="detail-code">${b.code} · ${b.location}</div>
+        <p class="detail-desc">${b.description}</p>
+        <div class="detail-meta">
+          <div class="meta-item">
+            <div class="meta-label">Floors</div>
+            <div class="meta-value">${b.floors} floors</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-value" style="color:${b.isOpen ? 'var(--moss)' : 'var(--red)'}">${b.isOpen ? 'Open Now' : 'Closed'}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Phone</div>
+            <div class="meta-value" style="font-size:0.8rem">${b.phone}</div>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn-nav" onclick="goToMap('${b.id}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            Get Directions
+          </button>
+          <button class="btn-outline" onclick="copyAddress('${b.location}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Location
+          </button>
+          <button class="btn-outline">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+        </div>
+      `;
+
+      const hoursRows = Object.entries(b.hours).map(([day, time]) => `
+        <div class="hours-row ${day === todayKey ? 'today' : ''}">
+          <span class="hours-day">${day === todayKey ? '▶ ' : ''}${day}</span>
+          <span class="hours-time">${time}</span>
+        </div>
+      `).join('');
+
+      const amenityTags = b.amenities.map(a => `<span class="amenity-tag">${a}</span>`).join('');
+
+      document.getElementById('detailSidebar').innerHTML = `
+        <div class="sidebar-section">
+          <div class="sidebar-title">Today's Hours</div>
+          <div class="status-pill ${b.isOpen ? 'status-open' : 'status-closed'}">
+            <span class="status-dot"></span>
+            ${b.isOpen ? 'Open Now' : 'Currently Closed'}
+          </div>
+          <div class="hours-list">${hoursRows}</div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">Amenities & Services</div>
+          <div class="amenities-list">${amenityTags}</div>
+        </div>
+      `;
+    }
+
+    function closeDetail() {
+      document.getElementById('detailPanel').classList.remove('open');
+      selectedBuilding = null;
+      document.querySelectorAll('.b-card, .b-list-card').forEach(el => el.classList.remove('selected'));
+    }
+
+    function goToMap(id) {
+      window.location.href = `map.html?building=${id}`;
+    }
+
+    function copyAddress(loc) {
+      navigator.clipboard?.writeText(loc);
+      // Brief feedback
+      const btns = document.querySelectorAll('.btn-outline');
+      btns.forEach(b => { if (b.textContent.includes('Copy')) { b.textContent = '✓ Copied!'; setTimeout(() => { b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy Location'; }, 1500); } });
+    }
+
+    // ── EVENT LISTENERS ──
+    document.getElementById('searchInput').addEventListener('input', e => {
+      currentSearch = e.target.value;
+      renderAll();
     });
+
+    document.getElementById('filterTabs').addEventListener('click', e => {
+      const tab = e.target.closest('.filter-tab');
+      if (!tab) return;
+      currentFilter = tab.dataset.filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderAll();
+    });
+
+    document.getElementById('gridViewBtn').addEventListener('click', () => {
+      currentView = 'grid';
+      document.getElementById('gridViewBtn').classList.add('active');
+      document.getElementById('listViewBtn').classList.remove('active');
+      document.getElementById('gridView').style.display = 'grid';
+      document.getElementById('listView').style.display = 'none';
+    });
+
+    document.getElementById('listViewBtn').addEventListener('click', () => {
+      currentView = 'list';
+      document.getElementById('listViewBtn').classList.add('active');
+      document.getElementById('gridViewBtn').classList.remove('active');
+      document.getElementById('gridView').style.display = 'none';
+      document.getElementById('listView').style.display = 'flex';
+      renderAll();
+    });
+
+    // ── URL PARAMS ──
+    const params = new URLSearchParams(window.location.search);
+    const urlQ = params.get('q');
+    const urlId = params.get('id');
+    if (urlQ) {
+      currentSearch = urlQ;
+      document.getElementById('searchInput').value = urlQ;
+    }
+
+    // ── INIT ──
+    renderAll();
+
+    if (urlId) {
+      setTimeout(() => selectBuilding(urlId), 150);
+    }
   </script>
 </body>
 </html>
