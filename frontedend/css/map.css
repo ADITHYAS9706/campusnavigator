@@ -95,12 +95,17 @@ pointer-events:none;
     background-color: rgb(134, 204, 227);
     border-radius: 10px;
     border:solid 1px black;
+    padding:8px 15px;
+    margin-left:5px;
+    border-radius:10px;
 }
 
 #search{
     background-color:antiquewhite;
     border-radius: 10px;
     border:solid 1px black;
+    padding:8px 15px;
+    margin-left:5px;
 
 }
 
